@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.ssafy.hotplace.model.mapper.HotPlaceMapper">
+
+	<resultMap type="com.ssafy.hotplace.model.LiveInfo"
+		id="hotplace">
+		<result column="AREA_CD" property="areaName" />
+		<result column="AREA_NM" property="areaCode" />
+		<result column="AREA_CGT_LV" property="areaCongestLevel" />
+		<result column="AREA_CGT_MSG" property="areaCongestMessage" />
+		<result column="AREA_LIVE_MIN" property="areaLiveMin" />
+		<result column="AREA_LIVE_MAX" property="areaLiveMax" />
+	</resultMap>
+
+	<insert id="writeLiveHotPlaceInfo" parameterType="com.ssafy.hotplace.model.LiveInfo">
+		insert into hotplaces (AREA_CD, AREA_NM, AREA_CGT_LV, AREA_CGT_MSG,
+		AREA_LIVE_MIN, AREA_LIVE_MAX)
+		<foreach item="hotplace" index="index" collection="list" open="values(" separator="," close=")" nullable="true">
+			<foreach item="value" index="index" collection="hotplace.entrySet()" separator=",">
+				"${value}"
+			</foreach>
+		</foreach>
+
+	</insert>
+</mapper>

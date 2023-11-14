@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.hotplace.model.mapper.PlaceMapper">
+
+	<resultMap type="com.ssafy.hotplace.model.PlaceInfo" id="place">
+		<result column="CATEGORY" property="category"/>
+		<result column="NO" property="areaNo"/>
+		<result column="AREA_CD" property="areaCode"/>
+		<result column="AREA_NM" property="areaName"/>
+	</resultMap>
+
+	<select id="listPlace" resultMap="place">
+		select CATEGORY, NO, AREA_CD, AREA_NM
+		from places
+		
+	</select>
+	
+</mapper>
