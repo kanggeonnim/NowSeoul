@@ -38,7 +38,7 @@ public class DataRepository {
 	@Value("classpath:keys.json")
 	Resource resourceFile;
 
-	@Scheduled(cron = "0 */5 * * * *")
+//	@Scheduled(cron = "0 */5 * * * *")
 	private void updateHotPlaces() throws Exception {
 		String result = "";
 		String line = new BufferedReader(new InputStreamReader(resourceFile.getInputStream())).readLine();
@@ -73,7 +73,7 @@ public class DataRepository {
 		System.out.println("hotplaces update success");
 	}
 
-	@Scheduled(cron = "0 */5 * * * *")
+	@Scheduled(cron = "0/10 * * * * *")
 	private void updateRestaurants() throws Exception {
 		String result = "";
 		String line = new BufferedReader(new InputStreamReader(resourceFile.getInputStream())).readLine();
@@ -81,25 +81,24 @@ public class DataRepository {
 		JSONObject jsonObject = (JSONObject) jsonParser.parse(line);
 		String key = (String) jsonObject.get("key");
 		URL url;
-		List<PlaceDTO> list = placeService.listArticle();
-		List<HotplaceDTO> hotplaces = new ArrayList<HotplaceDTO>();
-
-		for (int i = 1;; i += 1000) {
+		for (int i = 1;i<2000; i += 1000) {
 			url = new URL(
-					"http://openapi.seoul.go.kr:8088/" + key + "/json/citydata_ppltn/" + i + "/" + i + 1000 + "/");
+					"http://openapi.seoul.go.kr:8088/" + key + "/json/LOCALDATA_072404/" + i + "/" + (i + 999) + "/");
+			System.out.println(url);
 			BufferedReader bf;
 			bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-
+			System.out.println(bf.readLine());
 			jsonParser = new JSONParser();
 			jsonObject = (JSONObject) jsonParser.parse(bf);
-			JSONArray placeArray = (JSONArray) jsonObject.get("SeoulRtd.citydata_ppltn");
-			jsonObject = (JSONObject) placeArray.get(0);
-			HotplaceDTO hotplace = HotplaceDTO.builder().areaName((String) jsonObject.get("AREA_NM"))
-					.areaCode((String) jsonObject.get("AREA_CD"))
-					.areaCongestLevel((String) jsonObject.get("AREA_CONGEST_LVL"))
-					.areaCongestMessage((String) jsonObject.get("AREA_CONGEST_MSG"))
-					.areaLiveMin((String) jsonObject.get("AREA_PPLTN_MIN"))
-					.areaLiveMax((String) jsonObject.get("AREA_PPLTN_MAX")).build();
+			System.out.println(bf);
+//			JSONArray placeArray = (JSONArray) jsonObject.get("SeoulRtd.citydata_ppltn");
+//			jsonObject = (JSONObject) placeArray.get(0);
+//			HotplaceDTO hotplace = HotplaceDTO.builder().areaName((String) jsonObject.get("AREA_NM"))
+//					.areaCode((String) jsonObject.get("AREA_CD"))
+//					.areaCongestLevel((String) jsonObject.get("AREA_CONGEST_LVL"))
+//					.areaCongestMessage((String) jsonObject.get("AREA_CONGEST_MSG"))
+//					.areaLiveMin((String) jsonObject.get("AREA_PPLTN_MIN"))
+//					.areaLiveMax((String) jsonObject.get("AREA_PPLTN_MAX")).build();
 		}
 
 	}

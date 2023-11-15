@@ -4,7 +4,7 @@
 
 <mapper namespace="com.ssafy.hotplace.model.mapper.PlaceMapper">
 
-	<resultMap type="com.ssafy.hotplace.model.PlaceInfo" id="place">
+	<resultMap type="com.ssafy.hotplace.model.PlaceDTO" id="place">
 		<result column="CATEGORY" property="category"/>
 		<result column="NO" property="areaNo"/>
 		<result column="AREA_CD" property="areaCode"/>

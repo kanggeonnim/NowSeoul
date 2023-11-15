@@ -3,7 +3,7 @@
 <mapper
 	namespace="com.ssafy.hotplace.model.mapper.HotPlaceMapper">
 
-	<resultMap type="com.ssafy.hotplace.model.LiveInfo"
+	<resultMap type="com.ssafy.hotplace.model.HotplaceDTO"
 		id="hotplace">
 		<id column="AREA_CD" property="areaCode" />
 		<id column="AREA_NM" property="areaName" />
@@ -22,7 +22,7 @@
 		</foreach>
 	</insert>
 	
-	<update id="updateHotPlace" parameterType="com.ssafy.hotplace.model.LiveInfo">
+	<update id="updateHotPlace" parameterType="com.ssafy.hotplace.model.HotplaceDTO">
 		update hotplaces
 		set AREA_NM=#{hotplace.areaName}, AREA_CGT_LV=#{hotplace.areaCongestLevel}, AREA_CGT_MSG=#{hotplace.areaCongestMessage}, AREA_LIVE_MIN=#{hotplace.areaLiveMin}, AREA_LIVE_MAX=#{hotplace.areaLiveMax}
 		where AREA_CD = #{hotplace.areaCode}
