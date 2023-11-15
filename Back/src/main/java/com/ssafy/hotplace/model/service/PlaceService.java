@@ -2,10 +2,10 @@ package com.ssafy.hotplace.model.service;
 
 import java.util.List;
 
-import com.ssafy.hotplace.model.PlaceInfo;
+import com.ssafy.hotplace.model.PlaceDTO;
 
 public interface PlaceService {
 
-	List<PlaceInfo> listArticle() throws Exception;
+	List<PlaceDTO> listArticle() throws Exception;
 	
 }

@@ -1,11 +1,10 @@
 package com.ssafy.hotplace.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class LiveInfo {
+public class HotplaceDTO {
 	private String areaName;	// 핫스팟 장소명
 	private String areaCode;	// 핫스팟 코드명
 	private String areaCongestLevel;	// 장소 혼잡도 지표	
@@ -14,7 +13,7 @@ public class LiveInfo {
 	private String areaLiveMax;	// 실시간 인구 지표 최대값
 	
 	@Builder
-	public LiveInfo(String areaName, String areaCode, String areaCongestLevel, String areaCongestMessage,
+	public HotplaceDTO(String areaName, String areaCode, String areaCongestLevel, String areaCongestMessage,
 			String areaLiveMin, String areaLiveMax) {
 		super();
 		this.areaName = areaName;

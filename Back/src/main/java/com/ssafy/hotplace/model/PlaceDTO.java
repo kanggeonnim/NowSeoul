@@ -3,7 +3,7 @@ package com.ssafy.hotplace.model;
 import lombok.Data;
 
 @Data
-public class PlaceInfo {
+public class PlaceDTO {
 	private String category;	// 분류
 	private String areaNo;	// 장소 아이디
 	private String areaCode;	// 장소 코드

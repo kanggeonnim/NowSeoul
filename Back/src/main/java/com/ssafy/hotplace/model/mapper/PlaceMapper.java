@@ -5,15 +5,15 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ssafy.hotplace.model.PlaceInfo;
+import com.ssafy.hotplace.model.PlaceDTO;
 @Mapper
 public interface PlaceMapper {
 
-	void writeLiveHotPlaceInfo(PlaceInfo placeInfo) throws SQLException;
+	void writeLiveHotPlaceInfo(PlaceDTO placeInfo) throws SQLException;
 //
 //	void registerFile(BoardDto boardDto) throws Exception;
 
-	List<PlaceInfo> listPlace() throws SQLException;
+	List<PlaceDTO> listPlace() throws SQLException;
 
 //	int getTotalArticleCount(Map<String, Object> param) throws SQLException;
 //

@@ -5,22 +5,32 @@
 
 	<resultMap type="com.ssafy.hotplace.model.LiveInfo"
 		id="hotplace">
-		<result column="AREA_CD" property="areaName" />
-		<result column="AREA_NM" property="areaCode" />
-		<result column="AREA_CGT_LV" property="areaCongestLevel" />
-		<result column="AREA_CGT_MSG" property="areaCongestMessage" />
-		<result column="AREA_LIVE_MIN" property="areaLiveMin" />
-		<result column="AREA_LIVE_MAX" property="areaLiveMax" />
+		<id column="AREA_CD" property="areaCode" />
+		<id column="AREA_NM" property="areaName" />
+		<id column="AREA_CGT_LV" property="areaCongestLevel" />
+		<id column="AREA_CGT_MSG" property="areaCongestMessage" />
+		<id column="AREA_LIVE_MIN" property="areaLiveMin" />
+		<id column="AREA_LIVE_MAX" property="areaLiveMax" />
 	</resultMap>
 
-	<insert id="writeLiveHotPlaceInfo" parameterType="com.ssafy.hotplace.model.LiveInfo">
+	<insert id="writeHotPlace" parameterType="HashMap">
 		insert into hotplaces (AREA_CD, AREA_NM, AREA_CGT_LV, AREA_CGT_MSG,
 		AREA_LIVE_MIN, AREA_LIVE_MAX)
-		<foreach item="hotplace" index="index" collection="list" open="values(" separator="," close=")" nullable="true">
-			<foreach item="value" index="index" collection="hotplace.entrySet()" separator=",">
-				"${value}"
-			</foreach>
+		values
+		<foreach item="hotplace" index="index" collection="list" separator=",">
+			(#{hotplace.areaCode}, #{hotplace.areaName}, #{hotplace.areaCongestLevel}, #{hotplace.areaCongestMessage}, #{hotplace.areaLiveMin}, #{hotplace.areaLiveMax})
 		</foreach>
-
 	</insert>
+	
+	<update id="updateHotPlace" parameterType="com.ssafy.hotplace.model.LiveInfo">
+		update hotplaces
+		set AREA_NM=#{hotplace.areaName}, AREA_CGT_LV=#{hotplace.areaCongestLevel}, AREA_CGT_MSG=#{hotplace.areaCongestMessage}, AREA_LIVE_MIN=#{hotplace.areaLiveMin}, AREA_LIVE_MAX=#{hotplace.areaLiveMax}
+		where AREA_CD = #{hotplace.areaCode}
+	</update>
+	
 </mapper>
+
+
+<!--<foreach item="value" index="index" collection="hotplace.entrySet()" separator=",">
+	"${value}"
+</foreach>-->
