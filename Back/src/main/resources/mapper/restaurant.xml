@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.ssafy.hotplace.model.mapper.RestaurantMapper">
+
+	<resultMap type="com.ssafy.hotplace.model.RestaurantDTO"
+		id="restaurant">
+		<id column="MGTNO" property="manageNo" />
+		<id column="DTLSTATENM" property="detaileStateName" />
+		<id column="SITETEL" property="tel" />
+		<id column="SITEPOSTNO" property="postNo" />
+		<id column="SITEWHLADDR" property="oldAddr" />
+		<id column="RDNWHLADDR" property="streetAddr" />
+		<id column="BPLCNM" property="businessplaceName" />
+		<id column="UPTAENM" property="uptaeName" />
+		<id column="X" property="x" />
+		<id column="Y" property="y" />
+		<id column="MENU" property="menu" />
+		<id column="OPENING_HOURS" property="openingHours" />
+	</resultMap>
+
+	<insert id="writeRestaurants" parameterType="HashMap">
+		insert into hotplaces (AREA_CD, AREA_NM, AREA_CGT_LV, AREA_CGT_MSG,
+		AREA_LIVE_MIN, AREA_LIVE_MAX)
+		values
+		<foreach item="hotplace" index="index" collection="list" separator=",">
+			(#{hotplace.areaCode}, #{hotplace.areaName}, #{hotplace.areaCongestLevel}, #{hotplace.areaCongestMessage}, #{hotplace.areaLiveMin}, #{hotplace.areaLiveMax})
+		</foreach>
+	</insert>
+	
+	<update id="updateRestaurants" parameterType="com.ssafy.hotplace.model.RestaurantDTO">
+		update hotplaces
+		set AREA_NM=#{hotplace.areaName}, AREA_CGT_LV=#{hotplace.areaCongestLevel}, AREA_CGT_MSG=#{hotplace.areaCongestMessage}, AREA_LIVE_MIN=#{hotplace.areaLiveMin}, AREA_LIVE_MAX=#{hotplace.areaLiveMax}
+		where AREA_CD = #{hotplace.areaCode}
+	</update>
+	
+</mapper>
+
+
+<!--<foreach item="value" index="index" collection="hotplace.entrySet()" separator=",">
+	"${value}"
+</foreach>-->
