@@ -21,7 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class HomeController {
 	@Value("classpath:keys.json")
 	Resource resourceFile;
-
+	
+	@GetMapping("/")
+	public String home() {
+		return "index";
+	}
 	@PostMapping("/api")
 	public String load_save(@RequestParam("date") String date, Model model) throws IOException, ParseException {
 		String result = "";
