@@ -11,6 +11,9 @@
 		<id column="AREA_CGT_MSG" property="areaCongestMessage" />
 		<id column="AREA_LIVE_MIN" property="areaLiveMin" />
 		<id column="AREA_LIVE_MAX" property="areaLiveMax" />
+		<id column="latitude" property="lat" />
+		<id column="longitude" property="lng" />
+		
 		<id column="MAIL_RATE" property="maleRate" />
 		<id column="FEMAIL_RATE" property="femaleRate" />
 		<id column="AGE_RATE0" property="ageRate0" />
@@ -25,49 +28,55 @@
 
 	<insert id="writeHotPlace" parameterType="HashMap">
 		insert into hotplaces (AREA_CD, AREA_NM, AREA_CGT_LV, AREA_CGT_MSG,
-		AREA_LIVE_MIN, AREA_LIVE_MAX, MAIL_RATE, FEMAIL_RATE, 
-		AGE_RATE0, AGE_RATE10, AGE_RATE20, AGE_RATE30, AGE_RATE40, AGE_RATE50, AGE_RATE60, AGE_RATE70)
+		AREA_LIVE_MIN, AREA_LIVE_MAX, MAIL_RATE, FEMAIL_RATE,
+		AGE_RATE0, AGE_RATE10, AGE_RATE20, AGE_RATE30, AGE_RATE40, AGE_RATE50,
+		AGE_RATE60, AGE_RATE70)
 		values
 		<foreach item="hotplace" index="index" collection="list"
 			separator=",">
 			(#{hotplace.areaCode}, #{hotplace.areaName},
 			#{hotplace.areaCongestLevel}, #{hotplace.areaCongestMessage},
-			#{hotplace.areaLiveMin}, #{hotplace.areaLiveMax}, 
-			#{hotplace.maleRate}, #{hotplace.femaleRate}, 
-			#{hotplace.ageRate0}, #{hotplace.ageRate10}, #{hotplace.ageRate20}, #{hotplace.ageRate30}, 
-			#{hotplace.ageRate40}, #{hotplace.ageRate50}, #{hotplace.ageRate60}, #{hotplace.ageRate70})
+			#{hotplace.areaLiveMin}, #{hotplace.areaLiveMax},
+			#{hotplace.maleRate}, #{hotplace.femaleRate},
+			#{hotplace.ageRate0}, #{hotplace.ageRate10}, #{hotplace.ageRate20}, #{hotplace.ageRate30},
+			#{hotplace.ageRate40}, #{hotplace.ageRate50}, #{hotplace.ageRate60},
+			#{hotplace.ageRate70})
 		</foreach>
 	</insert>
 
 	<update id="updateHotPlace"
 		parameterType="com.ssafy.hotplace.model.HotplaceDTO">
 		update hotplaces
-		set 
+		set
 		AREA_NM=#{areaName},
 		AREA_CGT_LV=#{areaCongestLevel},
 		AREA_CGT_MSG=#{areaCongestMessage},
 		AREA_LIVE_MIN=#{areaLiveMin},
 		AREA_LIVE_MAX=#{areaLiveMax},
-		MAIL_RATE=#{maleRate}, 
-		FEMAIL_RATE=#{femaleRate}, 
-		AGE_RATE0=#{ageRate0}, 
-		AGE_RATE10=#{ageRate10}, 
-		AGE_RATE20=#{ageRate20}, 
-		AGE_RATE30=#{ageRate30}, 
-		AGE_RATE40=#{ageRate40}, 
-		AGE_RATE50=#{ageRate50}, 
-		AGE_RATE60=#{ageRate60}, 
+		MAIL_RATE=#{maleRate},
+		FEMAIL_RATE=#{femaleRate},
+		AGE_RATE0=#{ageRate0},
+		AGE_RATE10=#{ageRate10},
+		AGE_RATE20=#{ageRate20},
+		AGE_RATE30=#{ageRate30},
+		AGE_RATE40=#{ageRate40},
+		AGE_RATE50=#{ageRate50},
+		AGE_RATE60=#{ageRate60},
 		AGE_RATE70=#{ageRate70}
-		where 
+		where
 		AREA_CD=#{areaCode}
 	</update>
 
 	<select id="listLiveInfo" resultMap="hotplace">
 		select
-		AREA_CD, AREA_NM, AREA_CGT_LV, AREA_CGT_MSG,
-		AREA_LIVE_MIN, AREA_LIVE_MAX, MAIL_RATE, FEMAIL_RATE, 
-		AGE_RATE0, AGE_RATE10, AGE_RATE20, AGE_RATE30, AGE_RATE40, AGE_RATE50, AGE_RATE60, AGE_RATE70
-		from hotplaces
+		hotplaces.AREA_CD,
+		hotplaces.AREA_NM, AREA_CGT_LV, AREA_CGT_MSG,
+		AREA_LIVE_MIN,
+		AREA_LIVE_MAX, latitude, longitude, MAIL_RATE, FEMAIL_RATE,
+		AGE_RATE0, AGE_RATE10, AGE_RATE20, AGE_RATE30, AGE_RATE40, AGE_RATE50,
+		AGE_RATE60, AGE_RATE70
+		from hotplaces inner join places
+		where hotplaces.AREA_CD = places.AREA_CD;
 	</select>
 </mapper>
 
