@@ -1,4 +1,4 @@
-package com.ssafy.hotplace.updater;
+package com.ssafy.hotplace.repository;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
