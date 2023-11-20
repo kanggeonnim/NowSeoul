@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,7 +11,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,10 +68,10 @@ public class HomeController {
 	}
 
 	@PostMapping("/post")
-	public ResponseEntity<Map<String, Object>> login(@RequestParam String wTitle, @RequestParam String wDetail) {
+	public String login(@RequestParam String wTitle, @RequestParam String wDetail) {
 
 		System.out.println(wTitle + "" + wDetail);
-		return null;
+		return "hello";
 	}
 }
 
