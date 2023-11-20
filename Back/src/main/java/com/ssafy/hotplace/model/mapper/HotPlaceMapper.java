@@ -12,4 +12,5 @@ public interface HotPlaceMapper {
 
 	int writeHotPlace(List<HotplaceDTO> list) throws SQLException;
 	int updateHotPlace(HotplaceDTO hotplace) throws SQLException;
+	List<HotplaceDTO> listLiveInfo() throws SQLException;
 }

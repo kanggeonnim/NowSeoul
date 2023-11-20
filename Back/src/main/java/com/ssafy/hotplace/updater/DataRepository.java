@@ -43,8 +43,8 @@ public class DataRepository {
 	@Value("classpath:keys.json")
 	Resource resourceFile;
 
-//	@Scheduled(cron = "0 */5 * * * *")
-	@Scheduled(cron = "0/10 * * * * *")
+	@Scheduled(cron = "0 */5 * * * *")	// 5분마다
+//	@Scheduled(cron = "0/10 * * * * *")	// 10초마다
 	private void updateHotPlaces() throws Exception {
 		String line = new BufferedReader(new InputStreamReader(resourceFile.getInputStream())).readLine();
 		JSONParser jsonParser = new JSONParser();
@@ -83,7 +83,7 @@ public class DataRepository {
 			hotplaces.add(hotplace);
 		}
 
-		System.out.println(hotplaces);
+//		System.out.println(hotplaces);
 //		hotplaceService.insert(hotplaces);
 		
 		hotplaceService.update(hotplaces);

@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class HotplaceDTO {
-	private String areaName;	// 핫스팟 장소명
 	private String areaCode;	// 핫스팟 코드명
+	private String areaName;	// 핫스팟 장소명
 //	private double lat; // 위도
 //	private double lng; // 경도
 	private String areaCongestLevel;	// 장소 혼잡도 지표	
@@ -27,13 +27,13 @@ public class HotplaceDTO {
 	private String ageRate70;
 	
 	@Builder
-	public HotplaceDTO(String areaName, String areaCode, String areaCongestLevel, String areaCongestMessage,
+	public HotplaceDTO(String areaCode, String areaName, String areaCongestLevel, String areaCongestMessage,
 			String areaLiveMin, String areaLiveMax, String maleRate, String femaleRate, String ageRate0,
 			String ageRate10, String ageRate20, String ageRate30, String ageRate40, String ageRate50, String ageRate60,
-			String ageRate70, double lat, double lng) {
+			String ageRate70) {
 		super();
-		this.areaName = areaName;
 		this.areaCode = areaCode;
+		this.areaName = areaName;
 		this.areaCongestLevel = areaCongestLevel;
 		this.areaCongestMessage = areaCongestMessage;
 		this.areaLiveMin = areaLiveMin;
@@ -48,6 +48,8 @@ public class HotplaceDTO {
 		this.ageRate50 = ageRate50;
 		this.ageRate60 = ageRate60;
 		this.ageRate70 = ageRate70;
-	}	
+	}
+	
+	
 	
 }

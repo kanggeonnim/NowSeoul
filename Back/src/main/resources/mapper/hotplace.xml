@@ -11,26 +11,66 @@
 		<id column="AREA_CGT_MSG" property="areaCongestMessage" />
 		<id column="AREA_LIVE_MIN" property="areaLiveMin" />
 		<id column="AREA_LIVE_MAX" property="areaLiveMax" />
+		<id column="MAIL_RATE" property="maleRate" />
+		<id column="FEMAIL_RATE" property="femaleRate" />
+		<id column="AGE_RATE0" property="ageRate0" />
+		<id column="AGE_RATE10" property="ageRate10" />
+		<id column="AGE_RATE20" property="ageRate20" />
+		<id column="AGE_RATE30" property="ageRate30" />
+		<id column="AGE_RATE40" property="ageRate40" />
+		<id column="AGE_RATE50" property="ageRate50" />
+		<id column="AGE_RATE60" property="ageRate60" />
+		<id column="AGE_RATE70" property="ageRate70" />
 	</resultMap>
 
 	<insert id="writeHotPlace" parameterType="HashMap">
 		insert into hotplaces (AREA_CD, AREA_NM, AREA_CGT_LV, AREA_CGT_MSG,
-		AREA_LIVE_MIN, AREA_LIVE_MAX)
+		AREA_LIVE_MIN, AREA_LIVE_MAX, MAIL_RATE, FEMAIL_RATE, 
+		AGE_RATE0, AGE_RATE10, AGE_RATE20, AGE_RATE30, AGE_RATE40, AGE_RATE50, AGE_RATE60, AGE_RATE70)
 		values
-		<foreach item="hotplace" index="index" collection="list" separator=",">
-			(#{hotplace.areaCode}, #{hotplace.areaName}, #{hotplace.areaCongestLevel}, #{hotplace.areaCongestMessage}, #{hotplace.areaLiveMin}, #{hotplace.areaLiveMax})
+		<foreach item="hotplace" index="index" collection="list"
+			separator=",">
+			(#{hotplace.areaCode}, #{hotplace.areaName},
+			#{hotplace.areaCongestLevel}, #{hotplace.areaCongestMessage},
+			#{hotplace.areaLiveMin}, #{hotplace.areaLiveMax}, 
+			#{hotplace.maleRate}, #{hotplace.femaleRate}, 
+			#{hotplace.ageRate0}, #{hotplace.ageRate10}, #{hotplace.ageRate20}, #{hotplace.ageRate30}, 
+			#{hotplace.ageRate40}, #{hotplace.ageRate50}, #{hotplace.ageRate60}, #{hotplace.ageRate70})
 		</foreach>
 	</insert>
-	
-	<update id="updateHotPlace" parameterType="com.ssafy.hotplace.model.HotplaceDTO">
+
+	<update id="updateHotPlace"
+		parameterType="com.ssafy.hotplace.model.HotplaceDTO">
 		update hotplaces
-		set AREA_NM=#{hotplace.areaName}, AREA_CGT_LV=#{hotplace.areaCongestLevel}, AREA_CGT_MSG=#{hotplace.areaCongestMessage}, AREA_LIVE_MIN=#{hotplace.areaLiveMin}, AREA_LIVE_MAX=#{hotplace.areaLiveMax}
-		where AREA_CD = #{hotplace.areaCode}
+		set 
+		AREA_NM=#{areaName},
+		AREA_CGT_LV=#{areaCongestLevel},
+		AREA_CGT_MSG=#{areaCongestMessage},
+		AREA_LIVE_MIN=#{areaLiveMin},
+		AREA_LIVE_MAX=#{areaLiveMax},
+		MAIL_RATE=#{maleRate}, 
+		FEMAIL_RATE=#{femaleRate}, 
+		AGE_RATE0=#{ageRate0}, 
+		AGE_RATE10=#{ageRate10}, 
+		AGE_RATE20=#{ageRate20}, 
+		AGE_RATE30=#{ageRate30}, 
+		AGE_RATE40=#{ageRate40}, 
+		AGE_RATE50=#{ageRate50}, 
+		AGE_RATE60=#{ageRate60}, 
+		AGE_RATE70=#{ageRate70}
+		where 
+		AREA_CD=#{areaCode}
 	</update>
-	
+
+	<select id="listLiveInfo" resultMap="hotplace">
+		select
+		AREA_CD, AREA_NM, AREA_CGT_LV, AREA_CGT_MSG,
+		AREA_LIVE_MIN, AREA_LIVE_MAX, MAIL_RATE, FEMAIL_RATE, 
+		AGE_RATE0, AGE_RATE10, AGE_RATE20, AGE_RATE30, AGE_RATE40, AGE_RATE50, AGE_RATE60, AGE_RATE70
+		from hotplaces
+	</select>
 </mapper>
 
 
-<!--<foreach item="value" index="index" collection="hotplace.entrySet()" separator=",">
-	"${value}"
-</foreach>-->
+<!--<foreach item="value" index="index" collection="hotplace.entrySet()" 
+	separator=","> "${value}" </foreach> -->

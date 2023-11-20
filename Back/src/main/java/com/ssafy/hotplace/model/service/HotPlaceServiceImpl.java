@@ -41,4 +41,10 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 			return 0;
 		}
 	}
+
+
+	@Override
+	public List<HotplaceDTO> listLiveInfo() throws Exception {
+		return hotplaceMapper.listLiveInfo();
+	}
 }
