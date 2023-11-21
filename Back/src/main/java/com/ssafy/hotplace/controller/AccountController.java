@@ -42,18 +42,36 @@ public class AccountController {
 //  @GetMapping("/signin/kakao")
 	@GetMapping("/kakao/callback")
 	public ResponseEntity<MsgEntity> callback(HttpServletRequest request) throws Exception {
+		
 		KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
+		
 		Optional<MemberDTO> userInfo = memberService.loginByKakaoId(String.valueOf(kakaoInfo.getId()));
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		MemberDTO member = null;
 		// 기존 회원인 경우
 		if (userInfo.isPresent()) {
-			System.out.println("이미 가입된 회원입니다");
+//			String accessToken = jwtUtil.createAccessToken(member.getId());
+//			String refreshToken = jwtUtil.createRefreshToken(member.getId());
+			if (jwtUtil.checkToken(request.getHeader("Authorization"))) {
+				log.info("사용 가능한 토큰!!!");
+				try {
+//					로그인 사용자 정보.
+					MemberDTO member = memberService.userInfo("kakao" + String.valueOf(kakaoInfo.getId()));
+					resultMap.put("userInfo", member);
+					status = HttpStatus.OK;
+				} catch (Exception e) {
+					log.error("정보조회 실패 : {}", e);
+					resultMap.put("message", e.getMessage());
+					status = HttpStatus.INTERNAL_SERVER_ERROR;
+				}
+			} else {
+				log.error("사용 불가능 토큰!!!");
+				status = HttpStatus.UNAUTHORIZED;
+			}
 		}
 		// 신규 회원인 경우(userInfo가 null인경우
 		else {
-			member = MemberDTO.builder()
+			MemberDTO member = MemberDTO.builder()
 					.id("kakao" + String.valueOf(kakaoInfo.getId()))
 					.name(String.valueOf(kakaoInfo.getNickname()))
 					.email(kakaoInfo.getEmail())
@@ -85,8 +103,8 @@ public class AccountController {
 		System.out.println(kakaoInfo.getEmail());
 		System.out.println(kakaoInfo.getNickname());
 		
-//		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 		return ResponseEntity.ok().body(new MsgEntity("Success", kakaoInfo));
+//		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 //	@ApiOperation(value = "로그인", notes = "아이디와 비밀번호를 이용하여 로그인 처리.")
