@@ -4,7 +4,7 @@ import { ref, onMounted, watch } from "vue";
 
 var map;
 
-const keyword = ref("서울역");
+const keyword = ref(" ");
 const props = defineProps({});
 const count = ref(0);
 const itemList = ref([]);
@@ -13,6 +13,8 @@ const markers1 = ref([]);
 const lati = ref([]);
 const lngi = ref([]);
 const htitle = ref([""]);
+const congest = ref([""]);
+const congestm = ref([""]);
 const pngtitle = ref([""]);
 var latlangs = ref([]);
 const bt = async () => {
@@ -27,6 +29,8 @@ const bt = async () => {
       lati.value[i] = itemLists.value[i].lat;
       lngi.value[i] = itemLists.value[i].lng;
       htitle.value[i] = itemLists.value[i].areaName;
+      congest.value[i] = itemLists.value[i].areaCongestLevel;
+      congestm.value[i] = itemLists.value[i].areaCongestMessage;
       pngtitle.value[i] = itemLists.value[i].areaCongestLevel;
     }
   });
@@ -57,13 +61,15 @@ const initMap = () => {
   map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
   const eventOpen = (marker, infowindow) => {
-    infowindow.open(map, marker);
-    var btn = document.getElementById("kk");
-    const conselon = () => {
-      customOverlay.setMap(map);
-      map.setZoomable(false);
+    return () => {
+      infowindow.open(map, marker);
+      var btn = document.getElementById("kk");
+      const conselon = () => {
+        customOverlay.setMap(map);
+        map.setZoomable(false);
 
-      btn.onclick = conselon;
+        btn.onclick = conselon;
+      };
     };
   };
   const eventClose = (infowindow) => {
@@ -85,7 +91,11 @@ const initMap = () => {
       title: htitle.value[i], // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
       image: markerImage, // 마커 이미지
     });
-    const iwContent = `<div> <button id="kk" >음식점${count.value} </button></div><div><button id="" >장소 </button></div><div><button id="" >상세보기 </button></div><div><button id="" >추천</button></div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    const iwContent = `<div><img
+        class="bao"style="-webkit-user-drag: none;"
+        src="https://data.seoul.go.kr/SeoulRtd/images/hotspot/${htitle.value[i]}.jpg"
+
+        /> <button id="kk" > </button></div><div>${congestm.value[i]}${congest.value[i]} </div><div><button id="" >상세보기 </button></div><div><button id="" >추천</button></div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
     const iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
     var content = `<div class ="label"><span class="left"></span><span class="center"> <img
         class="bao"style="-webkit-user-drag: none;"
@@ -104,12 +114,17 @@ const initMap = () => {
     console.log(latlangs.value[i]);
     kakao.maps.event.addListener(
       marker0,
-      "mouseover",
+      "click",
       eventOpen(marker0, infowindow1)
     );
-    kakao.maps.event.addListener(marker0, "mouseout", eventClose(infowindow1));
+    kakao.maps.event.addListener(
+      marker0,
+      "doubleclick",
+      eventClose(infowindow1)
+    );
     console.log("askn");
   }
+
   //marker0.setMap(map);
   //"https://data.seoul.go.kr/SeoulRtd/heatmap_api?hotspotNm=서울역&amp;baseDate=20231120&amp;timeCd=1100&amp;minX=126.9685803678149&amp;minY=37.55327954490795&amp;maxX=126.97722841067045&amp;maxY=37.559979115251025&amp;width=768&amp;height=777"
 
@@ -369,10 +384,9 @@ const initMap = () => {
   border-radius: 5px;
 }
 .bao {
-  opacity: 0.5;
   transform: scale();
-  width: 50vw;
-  height: 50vh;
+  width: 200px;
+  height: 250px;
   z-index: 2;
   pointer-events: none;
 }

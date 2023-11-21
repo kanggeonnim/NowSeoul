@@ -11,5 +11,5 @@ import TheHeadingNav from "./components/LayOut/TheHeadingNav.vue";
     <RouterView />
   </div>
 </template>
-
+s
 <style></style>
