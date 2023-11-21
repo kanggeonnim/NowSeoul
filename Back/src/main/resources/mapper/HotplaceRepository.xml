@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper
-	namespace="com.ssafy.hotplace.model.mapper.HotPlaceMapper">
+<mapper namespace="com.ssafy.hotplace.model.repository.HotPlaceRepository">
 
 	<resultMap type="com.ssafy.hotplace.model.HotplaceDTO"
 		id="hotplace">
@@ -25,7 +24,6 @@
 		<id column="AGE_RATE60" property="ageRate60" />
 		<id column="AGE_RATE70" property="ageRate70" />
 	</resultMap>
-
 	<insert id="writeHotPlace" parameterType="HashMap">
 		insert into hotplaces (AREA_CD, AREA_NM, AREA_CGT_LV, AREA_CGT_MSG,
 		AREA_LIVE_MIN, AREA_LIVE_MAX, MAIL_RATE, FEMAIL_RATE,

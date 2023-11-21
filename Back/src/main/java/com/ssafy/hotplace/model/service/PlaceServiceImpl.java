@@ -6,15 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.hotplace.model.PlaceDTO;
-import com.ssafy.hotplace.model.mapper.PlaceMapper;
+import com.ssafy.hotplace.model.repository.PlaceRepository;
 
 @Service
 public class PlaceServiceImpl implements PlaceService {
 
-	private PlaceMapper placeMapper;
+	private PlaceRepository placeMapper;
 
 	@Autowired
-	public PlaceServiceImpl(PlaceMapper placeMapper) {
+	public PlaceServiceImpl(PlaceRepository placeMapper) {
 		super();
 		this.placeMapper = placeMapper;
 	}

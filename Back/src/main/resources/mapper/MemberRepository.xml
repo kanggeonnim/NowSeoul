@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.ssafy.hotplace.model.repository.MemberRepository">
+	<resultMap type="com.ssafy.hotplace.model.MemberDTO"
+		id="member">
+		<id column="ID" property="id" />
+		<id column="NAME" property="name" />
+		<id column="PASSWORD" property="password" />
+		<id column="EMAIL" property="email" />
+		<id column="ROLE" property="role" />
+		<id column="PROVIDER" property="provider" />
+		<id column="PROVIDER_ID" property="providerId" />
+		<id column="JOIN_DATE" property="joinDate" />
+		<id column="TOKEN" property="refreshToken" />
+	</resultMap>
+
+	<resultMap type="com.ssafy.hotplace.model.MemberDTO"
+		id="kakaoMember">
+		<id column="ID" property="id" />
+		<id column="NAME" property="name" />
+		<id column="EMAIL" property="email" />
+		<id column="ROLE" property="role" />
+		<id column="JOIN_DATE" property="joinDate" />
+		<id column="TOKEN" property="refreshToken" />
+	</resultMap>
+
+	<select id="loginByKakaoId" parameterType="String"
+		resultMap="member">
+		select
+		ID, NAME, PASSWORD, EMAIL, ROLE,
+		PROVIDER,
+		PROVIDER_ID, JOIN_DATE,
+		TOKEN
+		from members
+		where
+		PROVIDER_ID=#{id}
+	</select>
+
+	<insert id="register"
+		parameterType="com.ssafy.hotplace.model.MemberDTO">
+		insert into members (ID, NAME, EMAIL, ROLE,
+		PROVIDER,
+		PROVIDER_ID, JOIN_DATE, TOKEN)
+		values(#{id}, #{name},
+		#{email}, #{role},
+		#{provider}, #{providerId}, now(), #{refreshToken})
+	</insert>
+</mapper>

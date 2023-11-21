@@ -1,4 +1,4 @@
-package com.ssafy.hotplace.model.mapper;
+package com.ssafy.hotplace.model.repository;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -9,7 +9,7 @@ import com.ssafy.hotplace.model.HotplaceDTO;
 import com.ssafy.hotplace.model.RestaurantDTO;
 
 @Mapper
-public interface RestaurantMapper {
+public interface RestaurantRepository {
 
 	int writeRestaurants(List<RestaurantDTO> list) throws SQLException;
 	int updateRestaurants(RestaurantDTO restaurant) throws SQLException;

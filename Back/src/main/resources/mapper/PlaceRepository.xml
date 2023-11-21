@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.hotplace.model.mapper.PlaceMapper">
+<mapper namespace="com.ssafy.hotplace.model.repository.PlaceRepository">
 
 	<resultMap type="com.ssafy.hotplace.model.PlaceDTO" id="place">
 		<result column="CATEGORY" property="category"/>
@@ -14,7 +14,6 @@
 	<select id="listPlace" resultMap="place">
 		select CATEGORY, NO, AREA_CD, AREA_NM
 		from places
-		
 	</select>
 	
 </mapper>

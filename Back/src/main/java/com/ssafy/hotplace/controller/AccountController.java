@@ -1,29 +1,25 @@
 package com.ssafy.hotplace.controller;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.ssafy.hotplace.model.service.social.KakaoService;
-import com.ssafy.hotplace.util.JWTUtil;
-
-import springfox.documentation.annotations.ApiIgnore;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.hotplace.model.KakaoDTO;
 import com.ssafy.hotplace.model.MemberDTO;
 import com.ssafy.hotplace.model.Entity.MsgEntity;
+import com.ssafy.hotplace.model.service.MemberService;
+import com.ssafy.hotplace.model.service.social.KakaoService;
+import com.ssafy.hotplace.util.JWTUtil;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
@@ -31,22 +27,65 @@ import com.ssafy.hotplace.model.Entity.MsgEntity;
 public class AccountController {
 
 	private final KakaoService kakaoService;
+	private final MemberService memberService;
 	private final JWTUtil jwtUtil;
 
 	@Autowired
-	public AccountController(KakaoService kakaoService, JWTUtil jwtUtil) {
+	public AccountController(KakaoService kakaoService, MemberService memberService, JWTUtil jwtUtil) {
 		super();
 		this.kakaoService = kakaoService;
+		this.memberService = memberService;
 		this.jwtUtil = jwtUtil;
 	}
 
+// https://kauth.kakao.com/oauth/authorize?client_id=97f3803597017d8afc5cd9b9a5696cfa&redirect_uri=http://localhost/kakao/callback&response_type=code
 //  @GetMapping("/signin/kakao")
 	@GetMapping("/kakao/callback")
 	public ResponseEntity<MsgEntity> callback(HttpServletRequest request) throws Exception {
 		KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
+		Optional<MemberDTO> userInfo = memberService.loginByKakaoId(String.valueOf(kakaoInfo.getId()));
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		MemberDTO member = null;
+		// 기존 회원인 경우
+		if (userInfo.isPresent()) {
+			System.out.println("이미 가입된 회원입니다");
+		}
+		// 신규 회원인 경우(userInfo가 null인경우
+		else {
+			member = MemberDTO.builder()
+					.id("kakao" + String.valueOf(kakaoInfo.getId()))
+					.name(String.valueOf(kakaoInfo.getNickname()))
+					.email(kakaoInfo.getEmail())
+					.role("일반 회원")
+					.provider("kakao")
+					.providerId(String.valueOf(kakaoInfo.getId()))
+					.build();
+			
+			String accessToken = jwtUtil.createAccessToken(member.getId());
+			String refreshToken = jwtUtil.createRefreshToken(member.getId());
+			log.debug("access token : {}", accessToken);
+			log.debug("refresh token : {}", refreshToken);
+
+//			발급받은 refresh token을 DB에 저장.
+//			memberService.saveRefreshToken(member.getId(), refreshToken);
+			member.setRefreshToken(refreshToken);
+			
+//			JSON으로 token 전달.
+			resultMap.put("access-token", accessToken);
+//			resultMap.put("refresh-token", refreshToken);
+
+			status = HttpStatus.CREATED;
+
+			memberService.register(member);
+		}
+
+		System.out.println("userInfo is " + userInfo);
 		System.out.println(kakaoInfo.getId());
 		System.out.println(kakaoInfo.getEmail());
 		System.out.println(kakaoInfo.getNickname());
+		
+//		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 		return ResponseEntity.ok().body(new MsgEntity("Success", kakaoInfo));
 	}
 
@@ -148,7 +187,7 @@ public class AccountController {
 //				status = HttpStatus.CREATED;
 //			}
 //		} else {
-//			log.debug("리프레쉬토큰도 사용불가!!!!!!!");
+//			log.debug("인증시간이 만료되었습니다. 로그인이 필요합니다.");
 //			status = HttpStatus.UNAUTHORIZED;
 //		}
 //		return new ResponseEntity<Map<String, Object>>(resultMap, status);

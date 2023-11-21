@@ -7,15 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.hotplace.model.HotplaceDTO;
-import com.ssafy.hotplace.model.mapper.HotPlaceMapper;
+import com.ssafy.hotplace.model.repository.HotPlaceRepository;
 
 @Service
 public class HotPlaceServiceImpl implements HotPlaceService {
 
-	private HotPlaceMapper hotplaceMapper;
+	private HotPlaceRepository hotplaceMapper;
 
 	@Autowired
-	public HotPlaceServiceImpl(HotPlaceMapper hotplaceMapper) {
+	public HotPlaceServiceImpl(HotPlaceRepository hotplaceMapper) {
 		super();
 		this.hotplaceMapper = hotplaceMapper;
 	}

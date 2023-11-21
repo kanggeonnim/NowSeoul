@@ -1,4 +1,4 @@
-package com.ssafy.hotplace.model.mapper;
+package com.ssafy.hotplace.model.repository;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.hotplace.model.PlaceDTO;
 @Mapper
-public interface PlaceMapper {
+public interface PlaceRepository {
 
 	void writeLiveHotPlaceInfo(PlaceDTO placeInfo) throws SQLException;
 //
