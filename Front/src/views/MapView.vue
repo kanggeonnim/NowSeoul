@@ -4,39 +4,30 @@ import { ref, onMounted, watch } from "vue";
 
 var map;
 
-const keyword = ref("");
+const keyword = ref("서울역");
 const props = defineProps({});
-
+const count = ref(0);
 const itemList = ref([]);
 const itemLists = ref([]);
-const markers1 = ref([
-  {
-    areaName: "",
-    LatLng: "",
-  },
-]);
+const markers1 = ref([]);
 const lati = ref([]);
 const lngi = ref([]);
 const htitle = ref([""]);
 const pngtitle = ref([""]);
+var latlangs = ref([]);
 const bt = async () => {
   axios({
     method: "get",
     url: "http://192.168.130.55/live",
     responseType: "json",
   }).then(async (result) => {
-    console.log(result);
     itemList.value = result.data;
-    console.log("요기" + itemList.value[0]);
     for (let i = 0; i < itemList.value.length; i++) {
       itemLists.value.push(itemList.value[i]);
-      console.log(itemLists.value[i]);
       lati.value[i] = itemLists.value[i].lat;
       lngi.value[i] = itemLists.value[i].lng;
       htitle.value[i] = itemLists.value[i].areaName;
       pngtitle.value[i] = itemLists.value[i].areaCongestLevel;
-      console.log(itemLists.value[i].areaName);
-      console.log(lati.value[i] + "요기" + lngi.value[i]);
     }
   });
 };
@@ -64,98 +55,65 @@ const initMap = () => {
   };
 
   map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-  for (var i = 0; i < lati.value.length; i++) {
-    // 마커 이미지의 이미지 크기 입니다${pngtitle.value[i]}
-    var imageSrc = `@/assets/${pngtitle.value[i]}.png`;
-    var imageSize = new kakao.maps.Size(24, 35);
 
+  const eventOpen = (marker, infowindow) => {
+    infowindow.open(map, marker);
+    var btn = document.getElementById("kk");
+    const conselon = () => {
+      customOverlay.setMap(map);
+      map.setZoomable(false);
+
+      btn.onclick = conselon;
+    };
+  };
+  const eventClose = (infowindow) => {
+    return () => {
+      infowindow.close(infowindow);
+    };
+  };
+  for (var i = 0; i < lati.value.length; i++) {
+    var latlang = new kakao.maps.LatLng(lati.value[i], lngi.value[i]);
+    latlangs.value[i] = latlang;
+    // 마커 이미지의 이미지 크기 입니다${pngtitle.value[i]}
+    var imageSrc = `../src/assets/${pngtitle.value[i]}.png`;
+    var imageSize = new kakao.maps.Size(35, 35);
     // 마커 이미지를 생성합니다
     var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-    var latlang = new kakao.maps.LatLng(lati.value[i], lngi.value[i]);
-    // 마커를 생성합니다
-    console.log(latlang);
     var marker0 = new kakao.maps.Marker({
       map: map, // 마커를 표시할 지도
-      position: latlang, // 마커를 표시할 위치
+      position: latlangs.value[i], // 마커를 표시할 위치
       title: htitle.value[i], // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
       image: markerImage, // 마커 이미지
     });
-    console.log(htitle.value[i]);
-  }
-  marker0.setMap(map);
-  //"https://data.seoul.go.kr/SeoulRtd/heatmap_api?hotspotNm=서울역&amp;baseDate=20231120&amp;timeCd=1100&amp;minX=126.9685803678149&amp;minY=37.55327954490795&amp;maxX=126.97722841067045&amp;maxY=37.559979115251025&amp;width=768&amp;height=777"
-  var content = `<div class ="label"><span class="left"></span><span class="center"> <img
+    const iwContent = `<div> <button id="kk" >음식점${count.value} </button></div><div><button id="" >장소 </button></div><div><button id="" >상세보기 </button></div><div><button id="" >추천</button></div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    const iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+    var content = `<div class ="label"><span class="left"></span><span class="center"> <img
         class="bao"style="-webkit-user-drag: none;"
         src="https://data.seoul.go.kr/SeoulRtd/images/hotspot/${htitle.value[1]}.jpg"
 
         /></span><span class="right"></span></div>`;
-  const position = options.center;
-  var customOverlay = new kakao.maps.CustomOverlay({
-    position: position,
-    content: content,
-  });
-  // 마커가 표시될 위치입니다
-  var markerPosition = new kakao.maps.LatLng(
-    37.5566293300794875,
-    126.972904389242675
-  );
+    var customOverlay = new kakao.maps.CustomOverlay({
+      position: latlangs.value[i],
+      content: content,
+    });
+    // 인포윈도우를 생성합니다
+    var infowindow1 = new kakao.maps.InfoWindow({
+      content: iwContent,
+      removable: iwRemoveable,
+    });
+    console.log(latlangs.value[i]);
+    kakao.maps.event.addListener(
+      marker0,
+      "mouseover",
+      eventOpen(marker0, infowindow1)
+    );
+    kakao.maps.event.addListener(marker0, "mouseout", eventClose(infowindow1));
+    console.log("askn");
+  }
+  //marker0.setMap(map);
+  //"https://data.seoul.go.kr/SeoulRtd/heatmap_api?hotspotNm=서울역&amp;baseDate=20231120&amp;timeCd=1100&amp;minX=126.9685803678149&amp;minY=37.55327954490795&amp;maxX=126.97722841067045&amp;maxY=37.559979115251025&amp;width=768&amp;height=777"
 
   // 마커를 생성합니다
-
-  var marker1 = new kakao.maps.Marker({
-    position: markerPosition,
-  });
-  const cosel = ref(false);
-  watch(
-    () => cosel.value,
-    () => {
-      if (cosel.value) {
-        console.log(cosel.value);
-        customOverlay.setMap(map);
-      } else if (!console.value) {
-        console.log("뭐해");
-        customOverlay.setMap(null);
-      }
-    }
-  );
-  marker1.setMap(map);
-  // 마커에 click 이벤트를 등록합니다
-  // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-
-  const iwContent = `<div> <button id="kk" >음식점 </button></div><div><button id="kk" >장소 </button></div><div><button id="kk" >상세보기 </button></div><div><button id="kk" >추천</button></div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-  const iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-  // 인포윈도우를 생성합니다
-  var infowindow1 = new kakao.maps.InfoWindow({
-    content: iwContent,
-    removable: iwRemoveable,
-  });
-  kakao.maps.event.addListener(marker1, "click", function () {
-    infowindow1.open(map, marker1);
-    // 클릭된 마커가 없고, click 마커가 클릭된 마커가 아니면
-    // 마커의 이미지를 클릭 이미지로 변경합니다
-    //if (!selectedMarker || selectedMarker !== marker) {
-    // 클릭된 마커 객체가 null이 아니면
-    // 클릭된 마커의 이미지를 기본 이미지로 변경하고
-    //!!selectedMarker && selectedMarker.setImage(selectedMarker.normalImage);
-    // 현재 클릭된 마커의 이미지는 클릭 이미지로 변경합니다
-    //marker.setImage(clickImage);
-    //}
-    var btn = document.getElementById("kk");
-    const conselon = () => {
-      console.log("dgjdskljgl");
-      customOverlay.setMap(map);
-      map.setZoomable(false);
-    };
-    btn.onclick = conselon;
-
-    // 클릭된 마커를 현재 클릭된 마커 객체로 설정합니다
-    //selectedMarker = marker;
-  });
-
-  infowindow1.setZIndex(90);
-  marker1.setZIndex(90);
-  marker1.setMap(map);
 
   //######################################################################################################
   watch(
@@ -171,7 +129,6 @@ const initMap = () => {
   const markers = ref([]);
   // 키워드 검색을 요청하는 함수입니다
   const searchPlaces = () => {
-    console.log("여기");
     console.log(keyword.value);
     if (!keyword.value.replace(/^\s+|\s+$/g, "")) {
       alert("키워드를 입력해주세요!");
@@ -229,6 +186,7 @@ const initMap = () => {
       (function (marker, title) {
         kakao.maps.event.addListener(marker, "mouseover", function () {
           displayInfowindow(marker, title);
+          console.log(i);
         });
 
         kakao.maps.event.addListener(marker, "mouseout", function () {
