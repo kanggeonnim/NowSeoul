@@ -82,7 +82,7 @@ public class KakaoService {
         //HttpHeader 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        headers.add("Content-type", "application/x-www-form-urlencodedto;charset=utf-8");
 
         //HttpHeader 담기
         RestTemplate rt = new RestTemplate();
