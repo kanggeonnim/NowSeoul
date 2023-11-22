@@ -111,18 +111,10 @@ const initMap = () => {
       content: iwContent,
       removable: iwRemoveable,
     });
-    console.log(latlangs.value[i]);
-    kakao.maps.event.addListener(
-      marker0,
-      "click",
-      eventOpen(marker0, infowindow1)
-    );
-    kakao.maps.event.addListener(
-      marker0,
-      "doubleclick",
-      eventClose(infowindow1)
-    );
-    console.log("askn");
+    // console.log(latlangs.value[i]);
+    kakao.maps.event.addListener(marker0, "click", eventOpen(marker0, infowindow1));
+    kakao.maps.event.addListener(marker0, "doubleclick", eventClose(infowindow1));
+    // console.log("askn");
   }
 
   //marker0.setMap(map);
@@ -347,22 +339,13 @@ const initMap = () => {
 
 <template>
   <div class="map_wrap" style="position: ">
-    <div
-      class="mainmap"
-      id="map"
-      style="position: relative; overflow: hidden"
-    ></div>
+    <div class="mainmap" id="map" style="position: relative; overflow: hidden"></div>
 
     <div id="menu_wrap" class="bg_white">
       <div class="option">
         <div>
           키워드 :
-          <input
-            type="text"
-            v-model="keyword"
-            size="15"
-            v-on:keydown.enter="initMap()"
-          />
+          <input type="text" v-model="keyword" size="15" v-on:keydown.enter="initMap()" />
           <button v-on:click="initMap()">검색하기</button>
         </div>
       </div>

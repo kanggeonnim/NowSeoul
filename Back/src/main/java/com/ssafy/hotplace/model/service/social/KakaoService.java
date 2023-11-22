@@ -52,20 +52,18 @@ public class KakaoService {
 	        params.add("client_secret", KAKAO_CLIENT_SECRET);
 	        params.add("code"         , code);
 	        params.add("redirect_uri" , KAKAO_REDIRECT_URL);
-
 	        RestTemplate restTemplate = new RestTemplate();
 	        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
-
+	        
 	        ResponseEntity<String> response = restTemplate.exchange(
 	        		KAKAO_AUTH_URI + "/oauth/token",
 	                HttpMethod.POST,
 	                httpEntity,
 	                String.class
 	        );
-
+	        
 	        JSONParser jsonParser = new JSONParser();
 	        JSONObject jsonObj = (JSONObject) jsonParser.parse(response.getBody());
-
             accessToken  = (String) jsonObj.get("access_token");
             refreshToken = (String) jsonObj.get("refresh_token");
             System.out.println("access : "+accessToken);

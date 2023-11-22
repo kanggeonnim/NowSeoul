@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.hotplace.model.KakaoDTO;
@@ -27,7 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-//@RequestMapping("user")
+@RequestMapping("user")
+@CrossOrigin(origins = { "*" })
 public class AccountController {
 
 	private final KakaoService kakaoService;
@@ -43,12 +46,13 @@ public class AccountController {
 	}
 
 // https://kauth.kakao.com/oauth/authorize?client_id=97f3803597017d8afc5cd9b9a5696cfa&redirect_uri=http://localhost/kakao/callback&response_type=code
-//  @GetMapping("/signin/kakao")
-	@GetMapping("/kakao/callback")
-	public ResponseEntity<MsgEntity> callback(HttpServletRequest request) throws Exception {
 
-		KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
-
+	@PostMapping("/kakao/login")
+	public ResponseEntity<Map<String, Object>> login(@RequestBody String code) throws Exception {
+		code = code.substring(0,code.length()-1);
+		System.out.println(code);
+		KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(code);
+		System.out.println(kakaoInfo.getEmail());
 		Optional<MemberDTO> userInfo = memberService.loginByKakaoId(String.valueOf(kakaoInfo.getId()));
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -60,9 +64,9 @@ public class AccountController {
 			String accessToken = jwtUtil.createAccessToken(member.getId());
 			String refreshToken = jwtUtil.createRefreshToken(member.getId());
 
+			resultMap.put("userInfo", member);
 //			발급받은 refresh token을 DB에 저장.
 			memberService.saveRefreshToken(member.getId(), refreshToken);
-			resultMap.put("userInfo", member);
 
 //			JSON으로 token 전달.
 			resultMap.put("access-token", accessToken);
@@ -92,13 +96,12 @@ public class AccountController {
 			memberService.register(member);
 		}
 
-		System.out.println("userInfo is " + userInfo);
-		System.out.println(kakaoInfo.getId());
-		System.out.println(kakaoInfo.getEmail());
-		System.out.println(kakaoInfo.getNickname());
-
-		return ResponseEntity.ok().body(new MsgEntity("Success", kakaoInfo));
-//		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+//		System.out.println("userInfo is " + userInfo);
+//		System.out.println(kakaoInfo.getId());
+//		System.out.println(kakaoInfo.getEmail());
+//		System.out.println(kakaoInfo.getNickname());
+//		return ResponseEntity.ok().body(new MsgEntity("Success", kakaoInfo));
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 	@PostMapping("/login")
@@ -180,8 +183,7 @@ public class AccountController {
 	}
 
 	@PostMapping("/refresh")
-	public ResponseEntity<?> refreshToken(@RequestBody MemberDTO member, HttpServletRequest request)
-			throws Exception {
+	public ResponseEntity<?> refreshToken(@RequestBody MemberDTO member, HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		String token = request.getHeader("refreshToken");
