@@ -1,22 +1,26 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted, watch } from "vue";
+import MapDetail from "../components/Map/MapDetail.vue";
 
+// import { yangyu } from "@/views/yangyu.js";
+// areaCode; // 핫스팟 코드명,areaName; // 핫스팟 장소명,areaCongestLevel; // 장소 혼잡도 지표 areaCongestMessage; // 장소 혼잡도 지표 관련 메세지
+// areaLiveMin; // 실시간 인구 지표 최소값 areaLiveMax; // 실시간 인구 지표 최대값 lat; // 위도 lng; // 경도
+// 남성 인구 비율 // 여성 인구 비율
+// 연령대별 인구 비율 ageRate0; ageRate10; ageRate20;ageRate30;ageRate40;ageRate50;ageRate60;ageRate70;
 var map;
 
-const keyword = ref(" ");
+const keyword = ref(" "); //검색어
 const props = defineProps({});
-const count = ref(0);
-const itemList = ref([]);
-const itemLists = ref([]);
-const markers1 = ref([]);
-const lati = ref([]);
-const lngi = ref([]);
-const htitle = ref([""]);
-const congest = ref([""]);
-const congestm = ref([""]);
-const pngtitle = ref([""]);
-var latlangs = ref([]);
+const itemList = ref([]); //가져온 데이터 복사
+const lati = ref([]); //위도 lat
+const lngi = ref([]); //경도 lng
+var latlangs = ref([]); //좌표
+const numb = ref(); //
+var btn = ref([]);
+function consi() {
+  console.log("fklgjhnfsl");
+}
 const bt = async () => {
   axios({
     method: "get",
@@ -25,13 +29,8 @@ const bt = async () => {
   }).then(async (result) => {
     itemList.value = result.data;
     for (let i = 0; i < itemList.value.length; i++) {
-      itemLists.value.push(itemList.value[i]);
-      lati.value[i] = itemLists.value[i].lat;
-      lngi.value[i] = itemLists.value[i].lng;
-      htitle.value[i] = itemLists.value[i].areaName;
-      congest.value[i] = itemLists.value[i].areaCongestLevel;
-      congestm.value[i] = itemLists.value[i].areaCongestMessage;
-      pngtitle.value[i] = itemLists.value[i].areaCongestLevel;
+      lati.value[i] = itemList.value[i].lat;
+      lngi.value[i] = itemList.value[i].lng;
     }
   });
 };
@@ -43,12 +42,19 @@ onMounted(() => {
     const script = document.createElement("script");
     script.src =
       "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=74d60f58abf23ff7914f48f1c9647bb2&libraries=services,clusterer";
-    /*golbal kakao*/
+    /*global kakao*/
     script.onload = () => kakao.maps.load(() => initMap());
     document.head.appendChild(script);
   }
 });
 
+// const mapDetailInfo = ref({
+//   map: null,
+//   marker: null,
+//   isVisible: false,
+// });
+
+const mapDetailInfoList = ref([]);
 const initMap = () => {
   var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
 
@@ -59,70 +65,69 @@ const initMap = () => {
   };
 
   map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+  map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 
-  const eventOpen = (marker, infowindow) => {
-    return () => {
-      infowindow.open(map, marker);
-      var btn = document.getElementById("kk");
-      const conselon = () => {
-        customOverlay.setMap(map);
-        map.setZoomable(false);
-
-        btn.onclick = conselon;
-      };
-    };
-  };
-  const eventClose = (infowindow) => {
-    return () => {
-      infowindow.close(infowindow);
-    };
-  };
-  for (var i = 0; i < lati.value.length; i++) {
+  for (let i = 0; i < lati.value.length; i++) {
     var latlang = new kakao.maps.LatLng(lati.value[i], lngi.value[i]);
     latlangs.value[i] = latlang;
     // 마커 이미지의 이미지 크기 입니다${pngtitle.value[i]}
-    var imageSrc = `../src/assets/${pngtitle.value[i]}.png`;
-    var imageSize = new kakao.maps.Size(35, 35);
+    var imageSrc = `../src/assets/${itemList.value[i].areaCongestLevel}.png`;
+    var imageSize = new kakao.maps.Size(50, 50);
     // 마커 이미지를 생성합니다
     var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-    var marker0 = new kakao.maps.Marker({
+    let marker0 = new kakao.maps.Marker({
+      num: i,
       map: map, // 마커를 표시할 지도
       position: latlangs.value[i], // 마커를 표시할 위치
-      title: htitle.value[i], // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+      title: itemList.value[i].areaName, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
       image: markerImage, // 마커 이미지
     });
-    const iwContent = `<div><img
-        class="bao"style="-webkit-user-drag: none;"
-        src="https://data.seoul.go.kr/SeoulRtd/images/hotspot/${htitle.value[i]}.jpg"
+    var btn1;
 
-        /> <button id="kk" > </button></div><div>${congestm.value[i]}${congest.value[i]} </div><div><button id="" >상세보기 </button></div><div><button id="" >추천</button></div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-    const iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+    // const iwContent = ;// 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    // const iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
     var content = `<div class ="label"><span class="left"></span><span class="center"> <img
-        class="bao"style="-webkit-user-drag: none;"
-        src="https://data.seoul.go.kr/SeoulRtd/images/hotspot/${htitle.value[1]}.jpg"
+        class="bao1"style="-webkit-user-drag: none;"
+        src="https://data.seoul.go.kr/SeoulRtd/images/hotspot/${itemList.value[i].areaName}.jpg"
 
         /></span><span class="right"></span></div>`;
     var customOverlay = new kakao.maps.CustomOverlay({
       position: latlangs.value[i],
       content: content,
     });
+    // var btn = document.getElementById("kk");
+
     // 인포윈도우를 생성합니다
-    var infowindow1 = new kakao.maps.InfoWindow({
-      content: iwContent,
-      removable: iwRemoveable,
-    });
-    console.log(latlangs.value[i]);
-    kakao.maps.event.addListener(
-      marker0,
-      "click",
-      eventOpen(marker0, infowindow1)
-    );
-    kakao.maps.event.addListener(
-      marker0,
-      "doubleclick",
-      eventClose(infowindow1)
-    );
-    console.log("askn");
+    // var infowindow1 = new kakao.maps.InfoWindow({
+    //   // content: iwContent,
+    //   removable: iwRemoveable,
+    // });
+
+    // const eventOpen1 = () => {
+    //btn1 = document.getElementsByClassName("bao12");
+    // const consi = () => {
+    //   console.log("fklgjhnfsl");
+    //   customOverlay.setMap(map);
+    // };
+    // btn1.onclick = consi();
+    // };
+    // const eventOpen = (marker, infowindow) => {
+    //   return () => {
+    //     consi(), infowindow.open(map, marker);
+    //   };
+    // };
+    const eventOpen = () => {
+      let mapDetailInfo = {};
+      mapDetailInfo.item = itemList.value[i];
+      mapDetailInfo.marker = marker0;
+      // mapDetailInfo.infowindow = infowindow1;
+      mapDetailInfo.map = map;
+      mapDetailInfo.isVisible = true;
+      mapDetailInfoList.value.push(mapDetailInfo);
+    };
+    kakao.maps.event.addListener(marker0, "click", eventOpen);
+    marker0.setZIndex(90);
+    console.log(marker0);
   }
 
   //marker0.setMap(map);
@@ -135,7 +140,6 @@ const initMap = () => {
     () => keyword.value,
     () => {
       if (keyword.value) {
-        console.log("바뀌냐" + keyword.value);
         searchPlaces;
       }
     }
@@ -201,7 +205,6 @@ const initMap = () => {
       (function (marker, title) {
         kakao.maps.event.addListener(marker, "mouseover", function () {
           displayInfowindow(marker, title);
-          console.log(i);
         });
 
         kakao.maps.event.addListener(marker, "mouseout", function () {
@@ -293,8 +296,7 @@ const initMap = () => {
   // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
   const displayPagination = (pagination) => {
     var paginationEl = document.getElementById("pagination"),
-      fragment = document.createDocumentFragment(),
-      i;
+      fragment = document.createDocumentFragment();
 
     // 기존에 추가된 페이지번호를 삭제합니다
     while (paginationEl.hasChildNodes()) {
@@ -320,11 +322,11 @@ const initMap = () => {
     }
     paginationEl.appendChild(fragment);
   };
+
   // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
   // 인포윈도우에 장소명을 표시합니다
   const displayInfowindow = (marker, title) => {
     var content = '<div style="padding:5px;z-index:1;">' + title + "</div>";
-
     infowindow.setContent(content);
     infowindow.open(map, marker);
   };
@@ -346,6 +348,13 @@ const initMap = () => {
 </script>
 
 <template>
+  <template v-for="(mapDetailInfo, i) in mapDetailInfoList" :key="i">
+    <MapDetail
+      v-if="mapDetailInfo.isVisible"
+      :mapDetailInfo="mapDetailInfo"
+    ></MapDetail>
+  </template>
+
   <div class="map_wrap" style="position: ">
     <div
       class="mainmap"
@@ -384,6 +393,14 @@ const initMap = () => {
   border-radius: 5px;
 }
 .bao {
+  transform: scale();
+  width: 200px;
+  height: 250px;
+  z-index: 2;
+  pointer-events: none;
+}
+.bao1 {
+  opacity: 0.5;
   transform: scale();
   width: 200px;
   height: 250px;
