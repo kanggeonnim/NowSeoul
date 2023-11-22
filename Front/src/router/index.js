@@ -69,6 +69,10 @@ const router = createRouter({
       name: "join",
       component: () => import("../components/login/Join.vue"),
     },
+    {
+      path: "/kakao/callback",
+      component: () => import("../components/login/kakaoView.vue"),
+    },
   ],
 });
 

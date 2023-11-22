@@ -1,8 +1,15 @@
 <script setup>
 import MapView from "../../views/MapView.vue";
-import { ref } from "vue";
+import axios from "axios";
+import { ref, onMounted } from "vue";
+import { storeToRefs } from "pinia";
 import { RouterView, useRouter, RouterLink } from "vue-router";
+import { useMemberStore } from "@/stores/member";
+import { useMenuStore } from "@/stores/menu";
+import { KAKAO_AUTH_URL } from "@/api/kakao/KakaoAuth";
+
 const router = useRouter();
+const memberStore = useMemberStore();
 const modalCheck = ref(false);
 const modalOpen = () => {
   modalCheck.value = !modalCheck.value;
@@ -13,15 +20,67 @@ const loginOk = () => {
   loginKey.value = !loginKey.value;
   logoutKey.value = !logoutKey.value;
 };
+
+const { isLogin } = storeToRefs(memberStore);
+const { userLogin, getUserInfo } = memberStore;
+const { changeMenuState } = useMenuStore();
+
+const loginUser = ref({
+  userId: "",
+  userPwd: "",
+});
+
+const login = async () => {
+  await userLogin(loginUser.value);
+  let token = sessionStorage.getItem("accessToken");
+  if (isLogin) {
+    getUserInfo(token);
+    changeMenuState();
+  }
+  router.push("/");
+};
+const kakaoLogin = () => {
+  window.location.href = KAKAO_AUTH_URL;
+  
+};
+
+// onMounted(() => {
+//   isMember();
+// });
+
+// const isMember = () => {
+//   //URL의 param중 code값을 내려받기
+//   let code = new URL(window.location.href).searchParams.get("code");
+//   //fordata로 code 감싸기
+//   const codeDataForm = new FormData();
+//   codeDataForm.append("code", code);
+
+//   //본인 서버 해당 URL로 code 보내기
+//   axios
+//     .post(`http://192.168.130.54/kakao/callback`, codeDataForm, {
+//       headers: {
+//         "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+//       },
+//     })
+//     .then((response) => {
+//       //response로 accessToken 및 refresh, 사용자 정보
+//       let ACCESS_TOKEN = response.data.access_token;
+
+//       //엑세스 토큰 글로벌 저장 getAccessToken()으로 사용가능
+//       window.Kakao.Auth.setAccessToken(ACCESS_TOKEN);
+
+//       //이후 해당 사이트 로그인 진행(스토리지 저장)
+//     })
+//     .catch((error) => {
+//       console.log(error.response.data);
+//     });
+// };
 </script>
 
 <template>
   <div class="nav">
     <div class="mainnav">
-      <router-link
-        to="/"
-        v-on:click=""
-        style="text-decoration: none; color: rgb(255, 255, 255)"
+      <router-link to="/" v-on:click="" style="text-decoration: none; color: rgb(255, 255, 255)"
         >HotPlace</router-link
       >
       <router-link
@@ -30,10 +89,7 @@ const loginOk = () => {
         style="text-decoration: none; color: rgb(255, 255, 255)"
         >게시판</router-link
       >
-      <router-link
-        to="/plan"
-        v-on:click=""
-        style="text-decoration: none; color: rgb(255, 255, 255)"
+      <router-link to="/plan" v-on:click="" style="text-decoration: none; color: rgb(255, 255, 255)"
         >계획 세우기</router-link
       >
       <router-link
@@ -68,19 +124,14 @@ const loginOk = () => {
       <div class="overlay" v-if="modalCheck"></div>
       <div class="modal-container" v-if="modalCheck">
         <form method="post">
-          아이디:<input type="text" id="userId" /> 비밀번호:<input
-            type="text"
-            id="userPw"
-          />
+          아이디:<input type="text" id="userId" /> 비밀번호:<input type="text" id="userPw" />
           <button v-on:click="modalOpen" class="btn">확인</button>
+
+          <img src="../../assets/login/loginButtonKakao.jpg" alt="" @click="kakaoLogin" />
         </form>
       </div>
 
-      <a
-        href="#"
-        v-if="logoutKey"
-        v-on:click="modalOpen"
-        style="text-decoration: none; color: red"
+      <a href="#" v-if="logoutKey" v-on:click="modalOpen" style="text-decoration: none; color: red"
         >로그아웃</a
       >
     </div>

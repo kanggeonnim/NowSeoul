@@ -30,7 +30,8 @@
 		select
 		ID, NAME, PASSWORD, EMAIL, ROLE,
 		PROVIDER,
-		PROVIDER_ID, JOIN_DATE,
+		PROVIDER_ID,
+		JOIN_DATE,
 		TOKEN
 		from members
 		where
@@ -46,4 +47,45 @@
 		#{email}, #{role},
 		#{provider}, #{providerId}, now(), #{refreshToken})
 	</insert>
+
+	<select id="login" parameterType="map" resultMap="member">
+		select ID,
+		NAME, ID
+		from members
+		where ID = #{userId} and
+		PASSWORD = #{userPwd}
+	</select>
+
+	<select id="userInfo" parameterType="string" resultMap="member">
+		select
+		ID, NAME, PASSWORD, EMAIL, ROLE,
+		PROVIDER,
+		PROVIDER_ID,
+		JOIN_DATE,
+		TOKEN
+		from members
+		where ID = #{userId}
+	</select>
+
+	<update id="saveRefreshToken" parameterType="map">
+		update members
+		set
+		TOKEN = #{token}
+		where ID = #{userId}
+	</update>
+
+	<select id="getRefreshToken" parameterType="string"
+		resultType="string">
+		select TOKEN
+		from members
+		where ID = #{userId}
+	</select>
+
+	<update id="deleteRefreshToken" parameterType="map">
+		update members
+		set
+		TOKEN = #{token, jdbcType=VARCHAR}
+		where ID = #{userId}
+	</update>
+
 </mapper>

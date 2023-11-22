@@ -63,7 +63,7 @@ public class LiveController {
 		}
 	}
 
-
+	
 
 	private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();
