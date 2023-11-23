@@ -18,7 +18,7 @@ function stationAxios() {
 function localAxios() {
   const instance = axios.create({
     baseURL: VITE_VUE_API_URL,
-    // withCredentials: true,
+    withCredentials: true,
     headers: {
       "Content-Type": "application/json;charset=utf-8",
     },

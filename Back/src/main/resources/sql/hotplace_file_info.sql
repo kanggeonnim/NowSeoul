@@ -16,36 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `restaurants`
+-- Table structure for table `file_info`
 --
 
-DROP TABLE IF EXISTS `restaurants`;
+DROP TABLE IF EXISTS `file_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `restaurants` (
-  `MGT_NO` varchar(30) NOT NULL,
-  `DTL_STATE_NM` varchar(10) DEFAULT NULL,
-  `SITE_TEL` varchar(20) DEFAULT NULL,
-  `SITE_POST_NO` varchar(20) DEFAULT NULL,
-  `SITE_WHL_ADDR` varchar(45) DEFAULT NULL,
-  `RDN_WHL_ADDR` varchar(45) DEFAULT NULL,
-  `BPLC_NM` varchar(45) DEFAULT NULL,
-  `UPTAE_NM` varchar(20) DEFAULT NULL,
-  `X` decimal(13,10) DEFAULT NULL,
-  `Y` decimal(13,10) DEFAULT NULL,
-  `MENU` varchar(100) DEFAULT NULL,
-  `OPENING_HOURS` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`MGT_NO`)
+CREATE TABLE `file_info` (
+  `article_no` int NOT NULL,
+  `save_folder` varchar(50) DEFAULT NULL,
+  `original_file` varchar(50) DEFAULT NULL,
+  `save_file` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`article_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `restaurants`
+-- Dumping data for table `file_info`
 --
 
-LOCK TABLES `restaurants` WRITE;
-/*!40000 ALTER TABLE `restaurants` DISABLE KEYS */;
-/*!40000 ALTER TABLE `restaurants` ENABLE KEYS */;
+LOCK TABLES `file_info` WRITE;
+/*!40000 ALTER TABLE `file_info` DISABLE KEYS */;
+/*!40000 ALTER TABLE `file_info` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

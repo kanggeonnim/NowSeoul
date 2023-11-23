@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.hotplace.model.BoardDto;
 import com.ssafy.hotplace.model.BoardListDto;
@@ -30,11 +31,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @CrossOrigin(origins = { "*" })
 @RequestMapping("/board")
+//@RestController
 @Slf4j
 public class BoardController {
 
 	private BoardService boardService;
-
+ 
+	
 	public BoardController(BoardService boardService) {
 		super();
 		this.boardService = boardService;

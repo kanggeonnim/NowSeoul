@@ -16,36 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `restaurants`
+-- Table structure for table `board`
 --
 
-DROP TABLE IF EXISTS `restaurants`;
+DROP TABLE IF EXISTS `board`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `restaurants` (
-  `MGT_NO` varchar(30) NOT NULL,
-  `DTL_STATE_NM` varchar(10) DEFAULT NULL,
-  `SITE_TEL` varchar(20) DEFAULT NULL,
-  `SITE_POST_NO` varchar(20) DEFAULT NULL,
-  `SITE_WHL_ADDR` varchar(45) DEFAULT NULL,
-  `RDN_WHL_ADDR` varchar(45) DEFAULT NULL,
-  `BPLC_NM` varchar(45) DEFAULT NULL,
-  `UPTAE_NM` varchar(20) DEFAULT NULL,
-  `X` decimal(13,10) DEFAULT NULL,
-  `Y` decimal(13,10) DEFAULT NULL,
-  `MENU` varchar(100) DEFAULT NULL,
-  `OPENING_HOURS` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`MGT_NO`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `board` (
+  `article_no` int NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(30) NOT NULL,
+  `user_name` varchar(10) DEFAULT NULL,
+  `subject` varchar(100) DEFAULT NULL,
+  `content` varchar(2000) DEFAULT NULL,
+  `hit` int DEFAULT NULL,
+  `register_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`article_no`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `restaurants`
+-- Dumping data for table `board`
 --
 
-LOCK TABLES `restaurants` WRITE;
-/*!40000 ALTER TABLE `restaurants` DISABLE KEYS */;
-/*!40000 ALTER TABLE `restaurants` ENABLE KEYS */;
+LOCK TABLES `board` WRITE;
+/*!40000 ALTER TABLE `board` DISABLE KEYS */;
+INSERT INTO `board` VALUES (1,'1','1','1','1',1,'2023-11-23 07:08:27');
+/*!40000 ALTER TABLE `board` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
