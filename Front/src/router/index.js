@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MainView from "../views/MainView.vue";
+import Admin from "@/components/chat/Admin.vue";
+import User from "@/components/chat/User.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -63,6 +65,16 @@ const router = createRouter({
       path: "/mypage",
       name: "mypage",
       component: () => import("../components/login/MyPage.vue"),
+      children: [
+        {
+          path: "Admin",
+          component: Admin
+        },
+        {
+          path: "chat",
+          component: User
+        }
+      ]
     },
     {
       path: "/join",

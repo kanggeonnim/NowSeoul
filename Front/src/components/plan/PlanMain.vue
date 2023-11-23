@@ -1,4 +1,101 @@
 <script setup>
+import { ref, onMounted, reactive } from 'vue';
+import * as THREE from 'three';
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+// https://sketchfab.com/3d-models/azir-league-of-legends-character-1bcad9785c344aab93e776f9e9e6396d
+
+const isMounted = reactive({ value: false });
+const container = ref();
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('white');
+
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+camera.position.z = 20;
+camera.position.y = 8;
+
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(800, 1200);
+renderer.antialias = true;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+// renderer.outputEncoding = THREE.sRGBEncoding;
+
+const loader = new GLTFLoader();
+let azir;
+
+// mix
+let mixer;
+// /mix
+
+function loadModelWithAnimation(animationIndex) {
+  loader.load('/models/fullzir/source/AzirComplete.glb',
+    (gltf, geometry, mat) => {
+      azir = gltf.scene;
+      azir.scale.set(0.05, 0.05, 0.05);
+
+      // const textureLoader = new THREE.TextureLoader();
+      // const texture = textureLoader.load('/models/azir/textures/Azir_Mat_baseColor.png');
+      // const azirMaterial = new THREE.MeshStandardMaterial({ map: texture });
+
+      // azir.traverse((child) => {
+      //   if (child instanceof THREE.Mesh) {
+      //       console.log("azir : \n");
+      //       console.log(child.name, child);
+      //       child.material = azirMaterial;
+      //     }
+      //   }
+      // )
+
+      if (gltf.animations && gltf.animations.length > 0) {
+        mixer = new THREE.AnimationMixer(azir);
+
+        const animationToPlay = typeof animationIndex === 'azir_attack1.anm'
+          ? gltf.animations[animationIndex]
+          : gltf.animations.find(anim => anim.name === animationIndex);
+
+        if (animationToPlay) {
+          mixer.clipAction(animationToPlay).play();
+        }
+        else {
+          console.warn('animation not found');
+        }
+      }
+
+      if (isMounted.value) {
+        scene.add(azir);
+        console.log(azir);
+
+        animate();
+      }
+    }
+  );
+}
+
+function animate() {
+  requestAnimationFrame(animate)
+  if (mixer) {
+    mixer.update(0.01);
+  }
+  renderer.render(scene, camera);
+}
+
+onMounted(() => {
+  isMounted.value = true;
+  container.value.appendChild(renderer.domElement);
+  // 원하는 모션 선택해서 넣으면 나옴
+  loadModelWithAnimation('azir_attack1.anm');
+});
+</script>
+
+<template>
+  <div ref="container"></div>
+</template>
+
+<style scoped>
+
+</style>
+
+<!-- <script setup>
 import axios from "axios";
 import { storeToRefs } from "pinia";
 import { useCounterStore } from "@/stores/counter";
@@ -210,4 +307,4 @@ const initMap = () => {
   border: 1px solid red;
   border-radius: 5px;
 }
-</style>
+</style> -->

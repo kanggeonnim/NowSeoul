@@ -1,5 +1,13 @@
 <script setup>
 import { ref } from "vue";
+import { RouterLink, RouterView } from 'vue-router'
+
+import Admin from "@/components/chat/Admin.vue";
+import User from "@/components/chat/User.vue";
+
+
+let loginUserId = ref(false);
+
 const ques = ref("문의하기");
 const quesModal = ref(false);
 const changeQues = () => {
@@ -22,6 +30,15 @@ const changeQues = () => {
     <button v-on:click="changeQues">{{ ques }}</button>
     <input type="text" v-if="quesModal" class="modal" />
   </div>
+  <Admin/>
+  <User/>
+  <!-- <div v-if="loginUserId">
+    <Admin/>
+  </div>
+  <div v-else>
+    <User/>
+  </div>
+  <router-view></router-view> -->
 </template>
 
 <style scoped>
