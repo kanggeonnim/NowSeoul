@@ -20,7 +20,7 @@ var latlangs = ref([]);
 const bt = async () => {
   axios({
     method: "get",
-    url: "http://192.168.130.55/live",
+    url: "http://192.168.130.54/live",
     responseType: "json",
   }).then(async (result) => {
     itemList.value = result.data;

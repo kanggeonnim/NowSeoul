@@ -50,9 +50,9 @@ public class AccountController {
 	@PostMapping("/kakao/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestBody String code) throws Exception {
 		code = code.substring(0,code.length()-1);
-		System.out.println(code);
+//		System.out.println(code);
 		KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(code);
-		System.out.println(kakaoInfo.getEmail());
+//		System.out.println(kakaoInfo.getEmail());
 		Optional<MemberDTO> userInfo = memberService.loginByKakaoId(String.valueOf(kakaoInfo.getId()));
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -70,7 +70,7 @@ public class AccountController {
 
 //			JSON으로 token 전달.
 			resultMap.put("access-token", accessToken);
-			status = HttpStatus.OK;
+			status = HttpStatus.ACCEPTED;
 		}
 		// 신규 회원인 경우(userInfo가 null인경우
 		else {
@@ -80,8 +80,8 @@ public class AccountController {
 
 			String accessToken = jwtUtil.createAccessToken(member.getId());
 			String refreshToken = jwtUtil.createRefreshToken(member.getId());
-			log.debug("access token : {}", accessToken);
-			log.debug("refresh token : {}", refreshToken);
+//			log.debug("access token : {}", accessToken);
+//			log.debug("refresh token : {}", refreshToken);
 
 //			발급받은 refresh token을 DB에 저장.
 //			memberService.saveRefreshToken(member.getId(), refreshToken);

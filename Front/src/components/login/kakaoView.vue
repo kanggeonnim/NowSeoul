@@ -1,25 +1,41 @@
 <script setup>
-import axios from "axios";
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { storeToRefs } from "pinia";
+import { useRoute, useRouter } from "vue-router";
+import { useMemberStore } from "@/stores/member";
+import { useMenuStore } from "@/stores/menu";
+
+const memberStore = useMemberStore();
+const router = useRouter();
+const { isLogin } = storeToRefs(memberStore);
+const { userLoginKakao, getUserInfo } = memberStore;
+const { changeMenuState } = useMenuStore();
+
 const route = useRoute();
 const code = route.query.code;
 
-const callBackServer = async () => {
-  console.log(code);
-  axios.post("http://192.168.130.54/user/kakao/login", code).then(async (result) => {
-    console.log(result);
-  });
+// async function userConfirmKakao(sucess, fail) {
+//   // console.log(code);
+//   await local.post("http://192.168.130.54/user/kakao/login", code).then(sucess).catch(fail);
+// }
+const login = async () => {
+  await userLoginKakao(code);
+  let token = sessionStorage.getItem("accessToken");
+  console.log(token);
+  if (isLogin) {
+    getUserInfo(token);
+    changeMenuState();
+  }
+  router.push("/");
 };
 
 onMounted(() => {
-  callBackServer();
+  login();
 });
 </script>
 
 <template>
-  <!-- <div>{{ code }}</div> -->
-  <div>로딩중.</div>
+  <div>로딩중...</div>
 </template>
 
 <style scoped></style>

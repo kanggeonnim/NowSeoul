@@ -3,8 +3,7 @@ import { useRouter } from "vue-router";
 import { defineStore } from "pinia";
 import { jwtDecode } from "jwt-decode";
 
-import { kakaoAuthHandle } from "@/api/kakao/kakaoAuthHandle";
-import { userConfirm, findById, tokenRegeneration, logout } from "@/api/user";
+import { userConfirm, userConfirmKakao, findById, tokenRegeneration, logout } from "@/api/user";
 import { httpStatusCode } from "@/util/http-status";
 
 export const useMemberStore = defineStore("memberStore", () => {
@@ -23,8 +22,32 @@ export const useMemberStore = defineStore("memberStore", () => {
           let { data } = response;
           let accessToken = data["access-token"];
           let refreshToken = data["refresh-token"];
-          console.log("access token is ");
-          console.log(accessToken);
+          isLogin.value = true;
+          isLoginError.value = false;
+          isValidToken.value = true;
+          sessionStorage.setItem("accessToken", accessToken);
+          sessionStorage.setItem("refreshToken", refreshToken);
+        } else {
+          isLogin.value = false;
+          isLoginError.value = true;
+          isValidToken.value = false;
+        }
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  };
+
+  const userLoginKakao = async (code) => {
+    await userConfirmKakao(
+      code,
+      (response) => {
+        if (response.status === httpStatusCode.CREATE || httpStatusCode.ACCEPT) {
+          let { data } = response;
+          console.log(response);
+          let accessToken = data["access-token"];
+          let refreshToken = data["userInfo"]["refreshToken"];
           isLogin.value = true;
           isLoginError.value = false;
           isValidToken.value = true;
@@ -128,6 +151,7 @@ export const useMemberStore = defineStore("memberStore", () => {
     userInfo,
     isValidToken,
     userLogin,
+    userLoginKakao,
     getUserInfo,
     tokenRegenerate,
     userLogout,

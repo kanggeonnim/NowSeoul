@@ -66,8 +66,8 @@ public class KakaoService {
 	        JSONObject jsonObj = (JSONObject) jsonParser.parse(response.getBody());
             accessToken  = (String) jsonObj.get("access_token");
             refreshToken = (String) jsonObj.get("refresh_token");
-            System.out.println("access : "+accessToken);
-            System.out.println("refresh : "+refreshToken);
+//            System.out.println("access : "+accessToken);
+//            System.out.println("refresh : "+refreshToken);
             
         } catch (Exception e) {
             throw new Exception("API call failed");
