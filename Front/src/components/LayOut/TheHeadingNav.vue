@@ -84,7 +84,7 @@ const kakaoLogin = () => {
   background-color: rgb(0, 0, 0);
   padding: 5px;
   width: 96vw;
-  height: 7vh;
+  height: 12vh;
   box-shadow: 4px 4px 6px rgb(143, 143, 143);
 }
 .mainnav {

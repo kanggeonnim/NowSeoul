@@ -3,25 +3,29 @@ import axios from "axios";
 import { ref, onMounted, watch } from "vue";
 import MapDetail from "../components/Map/MapDetail.vue";
 
+// import { yangyu } from "@/views/yangyu.js";
 // areaCode; // 핫스팟 코드명,areaName; // 핫스팟 장소명,areaCongestLevel; // 장소 혼잡도 지표 areaCongestMessage; // 장소 혼잡도 지표 관련 메세지
 // areaLiveMin; // 실시간 인구 지표 최소값 areaLiveMax; // 실시간 인구 지표 최대값 lat; // 위도 lng; // 경도
 // 남성 인구 비율 // 여성 인구 비율
 // 연령대별 인구 비율 ageRate0; ageRate10; ageRate20;ageRate30;ageRate40;ageRate50;ageRate60;ageRate70;
 var map;
-
+const customOverlays = ref([]);
+const detailOverlays = ref([]);
+const markers0 = ref([]);
 const keyword = ref(" "); //검색어
 const props = defineProps({});
 const itemList = ref([]); //가져온 데이터 복사
 const lati = ref([]); //위도 lat
 const lngi = ref([]); //경도 lng
 var latlangs = ref([]); //좌표
-const numb = ref(); //
+const itemV = ref(); //
+const point = ref();
 var btn = ref([]);
-function consi() {}
+
 const bt = async () => {
   axios({
     method: "get",
-    url: "http://192.168.130.54/live",
+    url: "http://localhost/live",
     responseType: "json",
   }).then(async (result) => {
     itemList.value = result.data;
@@ -32,6 +36,8 @@ const bt = async () => {
   });
 };
 bt();
+//document.getElementsByClassName.onclick("koko");
+
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
     initMap();
@@ -64,6 +70,7 @@ const initMap = () => {
   map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
   map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 
+  var newmap = document.getElementsByClassName("map_wrap");
   for (let i = 0; i < lati.value.length; i++) {
     var latlang = new kakao.maps.LatLng(lati.value[i], lngi.value[i]);
     latlangs.value[i] = latlang;
@@ -79,52 +86,75 @@ const initMap = () => {
       title: itemList.value[i].areaName, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
       image: markerImage, // 마커 이미지
     });
+    markers0.value.push(marker0);
     var btn1;
 
     // const iwContent = ;// 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
     // const iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-    var content = `<div class ="label"><span class="left"></span><span class="center"> <img
-        class="bao1"style="-webkit-user-drag: none;"
-        src="https://data.seoul.go.kr/SeoulRtd/images/hotspot/${itemList.value[i].areaName}.jpg"
+    var content = `
+      <div class="infowin">
+        <img
+          class="infoImg"
+          src="https://data.seoul.go.kr/SeoulRtd/images/hotspot/${itemList.value[i].areaName}.jpg"
+        />
+      <div>
+      ${itemList.value[i].areaName}
 
-        /></span><span class="right"></span></div>`;
+        </div>
+        <div>
+          <button  class="infoDetail" ">상세보기</button>
+        </div><div>
+        <button class="hoho" >추천</button><button class ="infoClose">닫기</button></div>
+      </div>
+    `;
     var customOverlay = new kakao.maps.CustomOverlay({
       position: latlangs.value[i],
       content: content,
+      zIndex: 4,
     });
-    // var btn = document.getElementById("kk");
 
-    // 인포윈도우를 생성합니다
-    // var infowindow1 = new kakao.maps.InfoWindow({
-    //   // content: iwContent,
-    //   removable: iwRemoveable,
-    // });
+    customOverlays.value.push(customOverlay);
+    var contentD = '<div class="detailInfo">dsknkn</div>';
+    var detailOverlay = new kakao.maps.CustomOverlay({
+      //map: newmap,
+      //position: latlangs.value[i],
+      content: contentD,
+      xAnchor: 1,
+      yAnchor: 1,
+      zIndex: 90,
+    });
+    detailOverlays.value.push(detailOverlay);
 
-    // const eventOpen1 = () => {
-    //btn1 = document.getElementsByClassName("bao12");
-    // const consi = () => {
-    //   console.log("fklgjhnfsl");
-    //   customOverlay.setMap(map);
-    // };
-    // btn1.onclick = consi();
-    // };
-    // const eventOpen = (marker, infowindow) => {
-    //   return () => {
-    //     consi(), infowindow.open(map, marker);
-    //   };
-    // };
+    const closeInfowin = () => {
+      for (let i in customOverlays.value) customOverlays.value[i].setMap(null);
+      itemV.value = null;
+      console.log("aknknfa");
+    };
     const eventOpen = () => {
-      let mapDetailInfo = {};
-      mapDetailInfo.item = itemList.value[i];
-      mapDetailInfo.marker = marker0;
+      // let mapDetailInfo = {};
+      // mapDetailInfo.item = itemList.value[i];
+      // mapDetailInfo.marker = marker0;
       // mapDetailInfo.infowindow = infowindow1;
-      mapDetailInfo.map = map;
-      mapDetailInfo.isVisible = true;
-      mapDetailInfoList.value.push(mapDetailInfo);
+
+      // mapDetailInfo.map = map;
+      // mapDetailInfo.isVisible = true;
+      // mapDetailInfoList.value.push(mapDetailInfo);
+      closeInfowin();
+      customOverlays.value[i].setMap(map);
+      console.log(customOverlays.value[i]);
+      let btnD = document.getElementsByClassName("infoDetail")[0];
+      let btnC = document.getElementsByClassName("infoClose")[0];
+      console.log(btnD);
+      console.log(btnC);
+      btnD.addEventListener("click", () => {
+        console.log();
+        itemV.value = itemList.value[i];
+        console.log(itemV.value);
+      });
+      btnC.addEventListener("click", closeInfowin);
     };
     kakao.maps.event.addListener(marker0, "click", eventOpen);
-    marker0.setZIndex(90);
-    // console.log(marker0);
+    marker0.setZIndex(3);
   }
 
   //marker0.setMap(map);
@@ -143,9 +173,10 @@ const initMap = () => {
   );
   // 마커를 담을 배열입니다
   const markers = ref([]);
+
   // 키워드 검색을 요청하는 함수입니다
   const searchPlaces = () => {
-    // console.log(keyword.value);
+    console.log(keyword.value);
     if (!keyword.value.replace(/^\s+|\s+$/g, "")) {
       alert("키워드를 입력해주세요!");
       return false;
@@ -365,6 +396,24 @@ const initMap = () => {
       <div id="pagination"></div>
     </div>
   </div>
+  <div class="detailInfo" v-bind="itemV">
+    {{ itemV }}
+    <!-- <div>장소:{{ itemV.areaName }}</div>
+    <div>혼잡도:{{ itemV.areaCongestLevel }}</div>
+    <div>상황:{{ itemV.areaCongestMessage }}</div>
+    <div>혼잡인구 최솟값{{ itemV.areaLiveMin }}</div>
+    <div>혼잡인구 최댓값{{ itemV.areaLiveMax }}</div>
+    <div>남성비율:{{ itemV.maleRate }}</div>
+    <div>여성비율:{{ itemV.femaleRate }}</div>
+    <div>00~09세 비율:{{ itemV.ageRate0 }}</div>
+    <div>10~19세 비율:{{ itemV.ageRate10 }}</div>
+    <div>20~29세 비율:{{ itemV.ageRate20 }}</div>
+    <div>30~39세 비율:{{ itemV.ageRate30 }}</div>
+    <div>40~49세 비율:{{ itemV.ageRate40 }}</div>
+    <div>50~59세 비율:{{ itemV.ageRate50 }}</div>
+    <div>60~69세 비율:{{ itemV.ageRate60 }}</div>
+    <div>70~79세 비율:{{ itemV.ageRate70 }}</div> -->
+  </div>
 </template>
 
 <style>
@@ -377,20 +426,44 @@ const initMap = () => {
   border: 1px solid red;
   border-radius: 5px;
 }
-.bao {
+.infoImg {
   transform: scale();
   width: 200px;
   height: 250px;
   z-index: 2;
   pointer-events: none;
+  -webkit-user-drag: none;
 }
-.bao1 {
-  opacity: 0.5;
-  transform: scale();
-  width: 200px;
-  height: 250px;
-  z-index: 2;
-  pointer-events: none;
+.infowin {
+  position: relative;
+  bottom: 210px;
+  width: 17vw;
+  height: 40vh;
+  background-color: #fff;
+  z-index: 6;
+}
+.detailInfo {
+  position: absolute;
+  top: 11vh;
+  left: 75vw;
+  bottom: 10vh;
+  width: 20vw;
+  height: 79vh;
+  margin: 10px 0 30px 10px;
+  padding: 5px;
+  background: rgb(179, 179, 179);
+  z-index: 90;
+  font-size: auto;
+  border-radius: 5px;
+}
+.bar_green {
+  background-color: green;
+}
+.bar_pink {
+  background-color: pink;
+}
+.bar_blue {
+  background-color: blue;
 }
 /* ################################################################################################################ */
 
