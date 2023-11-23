@@ -1,5 +1,6 @@
 <script setup>
 import axios from 'axios'
+import { ref } from 'vue';
 import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
 // axios.post("http://192.168.130.56:1234/chat?name=qwer");
