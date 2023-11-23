@@ -4,8 +4,8 @@ import { RouterLink, RouterView } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
 
-// import Admin from "@/components/chat/Admin.vue";
-// import User from "@/components/chat/User.vue";
+import Admin from "@/components/chat/Admin.vue";
+import User from "@/components/chat/User.vue";
 
 const memberStore = useMemberStore();
 const { userInfo, isValidToken } = storeToRefs(memberStore);
@@ -16,6 +16,7 @@ const admin = ref({
   name: userInfo.value.name,
 });
 
+console.log(admin.value.id);
 const ques = ref("문의하기");
 const quesModal = ref(false);
 const changeQues = () => {
@@ -40,7 +41,7 @@ const changeQues = () => {
   </div>
   <!-- <Admin />
   <User /> -->
-  <div v-if="admin.value.id === 'kakao3170922753'">
+  <div v-if="admin.id === 'kakao3170922753'">
     <Admin />
   </div>
   <div v-else>
