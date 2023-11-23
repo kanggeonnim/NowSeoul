@@ -14,13 +14,6 @@ const modalCheck = ref(false);
 const modalOpen = () => {
   modalCheck.value = !modalCheck.value;
 };
-const loginKey = ref(true);
-const logoutKey = ref(false);
-const loginOk = () => {
-  loginKey.value = !loginKey.value;
-  logoutKey.value = !logoutKey.value;
-};
-
 const { isLogin } = storeToRefs(memberStore);
 const { userLoginKakao, getUserInfo } = memberStore;
 const { changeMenuState } = useMenuStore();
@@ -101,21 +94,21 @@ const kakaoLogin = () => {
     <div class="loginnav">
       <router-link
         to="/mypage"
-        v-if="logoutKey"
+        v-if="isLogin"
         v-on:click=""
         style="text-decoration: none; color: rgb(255, 255, 255)"
         >마이페이지</router-link
       >
       <router-link
         to="/join"
-        v-if="loginKey"
+        v-if="!isLogin"
         v-on:click=""
         style="text-decoration: none; color: rgb(255, 255, 255)"
         >회원가입</router-link
       >
       <a
         href="#"
-        v-if="loginKey"
+        v-if="!isLogin"
         v-on:click="modalOpen"
         style="text-decoration: none; color: rgb(255, 255, 255)"
         >로그인</a
@@ -130,12 +123,11 @@ const kakaoLogin = () => {
         </form>
       </div>
 
-      <a href="#" v-if="logoutKey" v-on:click="modalOpen" style="text-decoration: none; color: red"
+      <a href="#" v-if="isLogin" v-on:click="modalOpen" style="text-decoration: none; color: red"
         >로그아웃</a
       >
     </div>
   </div>
-  <button v-on:click="loginOk">확인하기</button>
 </template>
 <style scoped>
 .nav {
