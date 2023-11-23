@@ -18,9 +18,7 @@ const lngi = ref([]); //경도 lng
 var latlangs = ref([]); //좌표
 const numb = ref(); //
 var btn = ref([]);
-function consi() {
-  console.log("fklgjhnfsl");
-}
+function consi() {}
 const bt = async () => {
   axios({
     method: "get",
@@ -127,7 +125,7 @@ const initMap = () => {
     };
     kakao.maps.event.addListener(marker0, "click", eventOpen);
     marker0.setZIndex(90);
-    console.log(marker0);
+    // console.log(marker0);
   }
 
   //marker0.setMap(map);
@@ -148,7 +146,7 @@ const initMap = () => {
   const markers = ref([]);
   // 키워드 검색을 요청하는 함수입니다
   const searchPlaces = () => {
-    console.log(keyword.value);
+    // console.log(keyword.value);
     if (!keyword.value.replace(/^\s+|\s+$/g, "")) {
       alert("키워드를 입력해주세요!");
       return false;
@@ -349,29 +347,17 @@ const initMap = () => {
 
 <template>
   <template v-for="(mapDetailInfo, i) in mapDetailInfoList" :key="i">
-    <MapDetail
-      v-if="mapDetailInfo.isVisible"
-      :mapDetailInfo="mapDetailInfo"
-    ></MapDetail>
+    <MapDetail v-if="mapDetailInfo.isVisible" :mapDetailInfo="mapDetailInfo"></MapDetail>
   </template>
 
   <div class="map_wrap" style="position: ">
-    <div
-      class="mainmap"
-      id="map"
-      style="position: relative; overflow: hidden"
-    ></div>
+    <div class="mainmap" id="map" style="position: relative; overflow: hidden"></div>
 
     <div id="menu_wrap" class="bg_white">
       <div class="option">
         <div>
           키워드 :
-          <input
-            type="text"
-            v-model="keyword"
-            size="15"
-            v-on:keydown.enter="initMap()"
-          />
+          <input type="text" v-model="keyword" size="15" v-on:keydown.enter="initMap()" />
           <button v-on:click="initMap()">검색하기</button>
         </div>
       </div>
