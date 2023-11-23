@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MainView from "../views/MainView.vue";
 
-import Admin from "@/components/chat/Admin.vue";
-import User from "@/components/chat/User.vue";
+// import Admin from "@/components/chat/Admin.vue";
+// import User from "@/components/chat/User.vue";
 
 import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
@@ -103,13 +103,13 @@ const router = createRouter({
       children: [
         {
           path: "Admin",
-          component: Admin
+          component: () => import("@/components/chat/Admin.vue"),
         },
         {
           path: "chat",
-          component: User
-        }
-      ]
+          component: () => import("@/components/chat/User.vue"),
+        },
+      ],
     },
     {
       path: "/join",

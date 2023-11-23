@@ -1,12 +1,20 @@
 <script setup>
 import { ref } from "vue";
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from "vue-router";
+import { storeToRefs } from "pinia";
+import { useMemberStore } from "@/stores/member";
 
-import Admin from "@/components/chat/Admin.vue";
-import User from "@/components/chat/User.vue";
+// import Admin from "@/components/chat/Admin.vue";
+// import User from "@/components/chat/User.vue";
 
+const memberStore = useMemberStore();
+const { userInfo, isValidToken } = storeToRefs(memberStore);
+const { getUserInfo } = memberStore;
 
-let loginUserId = ref(false);
+const admin = ref({
+  id: userInfo.value.id,
+  name: userInfo.value.name,
+});
 
 const ques = ref("문의하기");
 const quesModal = ref(false);
@@ -30,15 +38,15 @@ const changeQues = () => {
     <button v-on:click="changeQues">{{ ques }}</button>
     <input type="text" v-if="quesModal" class="modal" />
   </div>
-  <Admin/>
-  <User/>
-  <!-- <div v-if="loginUserId">
-    <Admin/>
+  <!-- <Admin />
+  <User /> -->
+  <div v-if="admin.value.id === 'kakao3170922753'">
+    <Admin />
   </div>
   <div v-else>
-    <User/>
+    <User />
   </div>
-  <router-view></router-view> -->
+  <router-view></router-view>
 </template>
 
 <style scoped>
