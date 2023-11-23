@@ -30,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MemberDTO register(MemberDTO memberDTO) throws Exception {
+	public int register(MemberDTO memberDTO) throws Exception {
 		return memberRepository.register(memberDTO);
 	}
 	

@@ -4,7 +4,7 @@ const kakaoAuthHandle = async () => {
   const code = new URL(window.location.href).searchParams.get("code");
   if (code) {
     try {
-      const response = await axios.get(`http://localhost:3000/kakao/callback?code=${code}`);
+      const response = await axios.get(`http://192.168.130.54:3000/kakao/callback?code=${code}`);
       localStorage.setItem("token", response.headers.authorization);
       console.log("response is " + response);
       window.location.href = "/";

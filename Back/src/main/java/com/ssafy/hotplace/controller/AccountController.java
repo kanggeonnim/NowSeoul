@@ -47,10 +47,13 @@ public class AccountController {
 
 // https://kauth.kakao.com/oauth/authorize?client_id=97f3803597017d8afc5cd9b9a5696cfa&redirect_uri=http://localhost/kakao/callback&response_type=code
 
+	@GetMapping("/kakao/login") String kang(){
+		return "test";
+	}
 	@PostMapping("/kakao/login")
-	public ResponseEntity<Map<String, Object>> login(@RequestBody String code) throws Exception {
-		code = code.substring(0,code.length()-1);
-//		System.out.println(code);
+	public ResponseEntity<Map<String, Object>> login( String code) throws Exception {
+//		code = code.substring(0,code.length()-1);
+		System.out.println(code);
 		KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(code);
 //		System.out.println(kakaoInfo.getEmail());
 		Optional<MemberDTO> userInfo = memberService.loginByKakaoId(String.valueOf(kakaoInfo.getId()));
@@ -94,6 +97,7 @@ public class AccountController {
 			status = HttpStatus.CREATED;
 
 			memberService.register(member);
+			
 		}
 
 //		System.out.println("userInfo is " + userInfo);

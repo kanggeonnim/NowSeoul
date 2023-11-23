@@ -17,11 +17,11 @@ function stationAxios() {
 // local vue api axios instance
 function localAxios() {
   const instance = axios.create({
-    baseURL: VITE_VUE_API_URL,
+    // baseURL: VITE_VUE_API_URL,
     // withCredentials: true,
-    // headers: {
-    //   "Content-Type": "application/json;charset=utf-8",
-    // },
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
   });
   // Request 발생 시 적용할 내용.
   instance.defaults.headers.common["Authorization"] = "";

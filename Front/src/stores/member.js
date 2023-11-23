@@ -43,7 +43,10 @@ export const useMemberStore = defineStore("memberStore", () => {
     await userConfirmKakao(
       code,
       (response) => {
-        if (response.status === httpStatusCode.CREATE || httpStatusCode.ACCEPT) {
+        if (
+          response.status === httpStatusCode.CREATE ||
+          response.status === httpStatusCode.ACCEPTED
+        ) {
           let { data } = response;
           console.log(response);
           let accessToken = data["access-token"];

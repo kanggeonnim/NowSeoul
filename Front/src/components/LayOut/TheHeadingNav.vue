@@ -22,7 +22,7 @@ const loginOk = () => {
 };
 
 const { isLogin } = storeToRefs(memberStore);
-const { userLogin, getUserInfo } = memberStore;
+const { userLoginKakao, getUserInfo } = memberStore;
 const { changeMenuState } = useMenuStore();
 
 const loginUser = ref({
@@ -41,7 +41,6 @@ const login = async () => {
 };
 const kakaoLogin = () => {
   window.location.href = KAKAO_AUTH_URL;
-  
 };
 
 // onMounted(() => {

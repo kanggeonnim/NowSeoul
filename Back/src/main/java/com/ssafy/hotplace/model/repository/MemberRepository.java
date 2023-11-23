@@ -21,5 +21,5 @@ public interface MemberRepository {
 
 	public void deleteRefreshToken(Map<String, String> map);
 
-	public MemberDTO register(MemberDTO memberDTO);
+	public int register(MemberDTO memberDTO);
 }

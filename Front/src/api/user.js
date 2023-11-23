@@ -7,9 +7,13 @@ async function userConfirm(param, success, fail) {
   await local.post(`/kakao/callback`, param).then(success).catch(fail);
 }
 
-async function userConfirmKakao(code, sucess, fail) {
-  // console.log(code);
-  await local.post("http://192.168.130.54/user/kakao/login", code).then(sucess).catch(fail);
+async function userConfirmKakao(code, success, fail) {
+  console.log("code is:" + code + "/");
+  // await local.post("http://192.168.130.54/user/kakao/login", code).then(success).catch(fail);
+  await axios
+    .post("http://192.168.130.54/user/kakao/login", new URLSearchParams({ code: code }))
+    .then(success)
+    .catch(fail);
 }
 
 async function findById(userid, success, fail) {
