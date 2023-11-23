@@ -11,7 +11,8 @@ const socket = new WebSocket("ws://192.168.130.56:1234/ws/chat");
 
 let user;
 let connect = async () => {
-  // user = document.getElementById("UserId").value;
+  user = admin.id;
+  console.log(user);
   axios.post("http://192.168.130.56:1234/chat?name="+user)
   .then((message) => {
     console.log(message);
@@ -19,7 +20,7 @@ let connect = async () => {
 }
 
 function change() {
-  // user = document.getElementById("UserId").value;
+  user = admin.id;
   var msg = {
     type:"ENTER",
     roomId: user,
@@ -71,7 +72,7 @@ const admin = ref({
   name: userInfo.value.name,
 });
 async function init() {
-  user = admin.id;
+  // user = admin.id;
   await connect();
   await change();
 }
