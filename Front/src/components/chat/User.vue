@@ -1,5 +1,7 @@
 <script setup>
 import axios from 'axios'
+import { storeToRefs } from "pinia";
+import { useMemberStore } from "@/stores/member";
 // axios.post("http://192.168.130.56:1234/chat?name=qwer");
 
 //  postman - http://192.168.130.56:1234/chat?name=tempo2
@@ -8,7 +10,7 @@ const socket = new WebSocket("ws://192.168.130.56:1234/ws/chat");
 
 let user;
 let connect = async () => {
-  user = document.getElementById("UserId").value;
+  // user = document.getElementById("UserId").value;
   axios.post("http://192.168.130.56:1234/chat?name="+user)
   .then((message) => {
     console.log(message);
@@ -16,7 +18,7 @@ let connect = async () => {
 }
 
 function change() {
-  user = document.getElementById("UserId").value;
+  // user = document.getElementById("UserId").value;
   var msg = {
     type:"ENTER",
     roomId: user,
@@ -60,6 +62,19 @@ function sendText() {
   if (txt !== "") socket.send(JSON.stringify(msg));
   document.getElementById("txt").value = "";
 }
+
+const memberStore = useMemberStore();
+const { userInfo } = storeToRefs(memberStore);
+const admin = ref({
+  id: userInfo.value.id,
+  name: userInfo.value.name,
+});
+async function init() {
+  user = admin.id;
+  await connect();
+  await change();
+}
+init();
 </script>
 
 <template>
@@ -69,12 +84,12 @@ function sendText() {
       <input type="hidden" id="roomId">
     </form> -->
     <br>
-    <input type="text" id="UserId" @keyup.enter="change">
+    <!-- <input type="text" id="UserId" @keyup.enter="change">
     <br>
     <button @:click="connect()">생성</button> |
     <button @:click="change()">접속</button> |
     <button @:click="disconnect()">종료</button>
-    <br>
+    <br> -->
     <br>
     <!-- <button @:click="connect()">연결</button>
     <button @:click="disconnect()">끊기</button>
