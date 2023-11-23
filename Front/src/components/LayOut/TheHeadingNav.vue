@@ -22,12 +22,9 @@ const kakaoLogin = () => {
   <div class="nav">
     <div class="mainnav">
       <router-link to="/" v-on:click="" style="text-decoration: none; color: rgb(255, 255, 255)"
-        >HotPlace</router-link
-      >
-      <router-link
-        to="/board/list"
-        v-on:click=""
-        style="text-decoration: none; color: rgb(255, 255, 255)"
+        ><img src="../../assets/main_logo.png" alt=""
+      /></router-link>
+      <router-link :to="{ name: 'board' }" style="text-decoration: none; color: rgb(255, 255, 255)"
         >게시판</router-link
       >
       <router-link to="/plan" v-on:click="" style="text-decoration: none; color: rgb(255, 255, 255)"
