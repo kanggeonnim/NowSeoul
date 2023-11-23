@@ -50,6 +50,7 @@ public class BoardServiceImpl implements BoardService {
 		if ("user_id".equals(key))
 			param.put("key", key == null ? "" : "b.user_id");
 		List<BoardDto> list = boardRepository.listArticle(param);
+		System.out.println(list);
 
 		if ("user_id".equals(key))
 			param.put("key", key == null ? "" : "user_id");

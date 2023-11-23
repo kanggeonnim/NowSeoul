@@ -2,7 +2,12 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { detailArticle, deleteArticle } from "@/api/board";
+import { storeToRefs } from "pinia";
+import { useMemberStore } from "@/stores/member";
 
+const memberStore = useMemberStore();
+const { userInfo, isValidToken } = storeToRefs(memberStore);
+const { getUserInfo } = memberStore;
 const route = useRoute();
 const router = useRouter();
 
@@ -68,14 +73,14 @@ function onDeleteArticle() {
                 src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"
               />
               <p>
-                <span class="fw-bold">안효인</span> <br />
+                <span class="fw-bold">{{ article.userName }}</span> <br />
                 <span class="text-secondary fw-light">
                   {{ article.registerTime }}1 조회 : {{ article.hit }}
                 </span>
               </p>
             </div>
           </div>
-          <div class="col-md-4 align-self-center text-end">댓글 : 17</div>
+          <div class="col-md-4 align-self-center text-end">댓글 : 0</div>
           <div class="divider mb-3"></div>
           <div class="text-secondary">
             {{ article.content }}

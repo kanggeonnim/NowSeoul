@@ -25,8 +25,8 @@
 	</resultMap>
 
 	<insert id="writeArticle" parameterType="boardDto">
-		insert into board (user_id, subject, content, hit, register_time)
-		values (#{userId}, #{subject}, #{content}, 0, now())
+		insert into board (user_id, user_name, subject, content, hit, register_time)
+		values (#{userId}, #{userName}, #{subject}, #{content}, 0, now())
 		<selectKey resultType="int" keyProperty="articleNo" order="AFTER">
 			select last_insert_id()
 		</selectKey>
@@ -52,9 +52,9 @@
 	</sql>
 
 	<select id="listArticle" parameterType="map" resultMap="article">
-		select b.article_no, b.user_id, b.subject, b.content, b.hit, b.register_time, m.user_name
+		select b.article_no, b.user_id, b.subject, b.content, b.hit, b.register_time, m.NAME as user_name
 		from board b, members m 
-		where b.user_id = m.user_id
+		where b.user_id = m.ID
 		<include refid="search"></include>
 		order by b.article_no desc
 		limit #{start}, #{listsize}
@@ -69,9 +69,9 @@
 	</select>
 	
 	<select id="getArticle" parameterType="int" resultMap="viewArticle">
-		select b.article_no, b.user_id, b.subject, b.content, b.hit, b.register_time, m.user_name 
+		select b.article_no, b.user_id, b.subject, b.content, b.hit, b.register_time, m.Name as user_name
 		from board b, members m
-		where b.user_id = m.user_id
+		where b.user_id = m.ID
 		and b.article_no = #{articleNo}
 	</select>
 	

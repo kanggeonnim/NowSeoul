@@ -2,7 +2,12 @@
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { registArticle, getModifyArticle, modifyArticle } from "@/api/board";
+import { storeToRefs } from "pinia";
+import { useMemberStore } from "@/stores/member";
 
+const memberStore = useMemberStore();
+const { userInfo, isValidToken } = storeToRefs(memberStore);
+const { getUserInfo } = memberStore;
 const router = useRouter();
 const route = useRoute();
 
@@ -14,8 +19,8 @@ const article = ref({
   articleNo: 0,
   subject: "",
   content: "",
-  userId: "",
-  userName: "",
+  userId: userInfo.value.id,
+  userName: userInfo.value.name,
   hit: 0,
   registerTime: "",
 });
@@ -115,6 +120,7 @@ function moveList() {
         v-model="article.userId"
         :disabled="isUseId"
         placeholder="작성자ID..."
+        readonly
       />
     </div>
     <div class="mb-3">

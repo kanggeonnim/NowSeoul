@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.hotplace.model.KakaoDTO;
@@ -51,7 +52,7 @@ public class AccountController {
 		return "test";
 	}
 	@PostMapping("/kakao/login")
-	public ResponseEntity<Map<String, Object>> login( String code) throws Exception {
+	public ResponseEntity<Map<String, Object>> login(@RequestBody String code) throws Exception {
 //		code = code.substring(0,code.length()-1);
 		System.out.println(code);
 		KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(code);

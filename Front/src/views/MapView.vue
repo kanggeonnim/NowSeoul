@@ -3,7 +3,6 @@ import axios from "axios";
 import { ref, onMounted, watch } from "vue";
 import MapDetail from "../components/Map/MapDetail.vue";
 
-// import { yangyu } from "@/views/yangyu.js";
 // areaCode; // 핫스팟 코드명,areaName; // 핫스팟 장소명,areaCongestLevel; // 장소 혼잡도 지표 areaCongestMessage; // 장소 혼잡도 지표 관련 메세지
 // areaLiveMin; // 실시간 인구 지표 최소값 areaLiveMax; // 실시간 인구 지표 최대값 lat; // 위도 lng; // 경도
 // 남성 인구 비율 // 여성 인구 비율
