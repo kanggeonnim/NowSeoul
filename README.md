@@ -62,8 +62,6 @@
 ### 클래스 다이어그램
 <img src="https://github.com/kanggeonnim/NowSeoul/assets/104503792/4a150c75-bae4-45f3-85f9-71cce0332ff7" width="80%" height="80%"/>
 
-
-# NowSeoul
 ## 강건
 > - Back Developer 
 > - spring boot scheduler cron을 통한 DB 갱신 
