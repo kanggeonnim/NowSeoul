@@ -9,11 +9,11 @@ async function userConfirm(param, success, fail) {
 
 async function userConfirmKakao(code, success, fail) {
   console.log("code is:" + code + "/");
-  await local.post("/user/kakao/login", code).then(success).catch(fail);
-  // await axios
-  //   .post("http://localhost/user/kakao/login", new URLSearchParams({ code: code }))
-  //   .then(success)
-  //   .catch(fail);
+  // await local.post("/user/kakao/login", code).then(success).catch(fail);
+  await axios
+    .post("http://localhost/user/kakao/login", new URLSearchParams({ code: code }))
+    .then(success)
+    .catch(fail);
 }
 
 async function findById(userid, success, fail) {

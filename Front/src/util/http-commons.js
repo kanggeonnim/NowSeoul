@@ -2,7 +2,7 @@ import axios from "axios";
 // import { httpStatusCode } from "./http-status";
 
 const { VITE_VUE_API_URL, VITE_ELECTRIC_CHARGING_STATION_URL } = import.meta.env;
-
+// axios.defaults.withCredentials = true;
 // station vue api axios instance
 function stationAxios() {
   const instance = axios.create({
@@ -21,10 +21,11 @@ function localAxios() {
     withCredentials: true,
     headers: {
       "Content-Type": "application/json;charset=utf-8",
+      Credential: true,
     },
   });
   // Request 발생 시 적용할 내용.
-  instance.defaults.headers.common["Authorization"] = "";
+  // instance.defaults.headers.common["Authorization"] = "";
   instance.defaults.headers.post["Content-Type"] = "application/json";
   instance.defaults.headers.put["Content-Type"] = "application/json";
 

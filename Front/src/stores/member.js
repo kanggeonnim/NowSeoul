@@ -80,10 +80,7 @@ export const useMemberStore = defineStore("memberStore", () => {
         }
       },
       async (error) => {
-        console.error(
-          "getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ",
-          error.response.status
-        );
+        console.error("getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error);
         isValidToken.value = false;
 
         await tokenRegenerate();
