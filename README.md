@@ -43,7 +43,7 @@
 > <img src="https://github.com/kanggeonnim/NowSeoul/assets/104503792/a7869942-cf80-4c8f-8d87-dd328aae3729" width="50%" height="50%"/>
 > - 카카오를 통해 OAuth 2.0 인증을 사용하여 사용자 로그인을 관리한다.
 > ### 게시판을 통한 유저간의 소통 활성화가 가능하다.
-> - CURD를 활용한 게시판의 기본기능을 제공한다.
+> - CRUD를 활용한 게시판의 기본기능을 제공한다.
 > ### 마이페이지에 문의하기 버튼을 통해 유저와 관리자간의 채팅이 가능하다.
 > - spring boot에 서버를 만들고 websocket을 이용하여 채팅 기능이 가능하다.
 > ### 메인 페이지에 있는 맵을 이용하여 서울의 실시간 데이터를 얻을 수 있다.
@@ -63,7 +63,10 @@
 
 # NowSeoul
 ## 강건
-Back Developer and board page develop and kakao login develpo 
+Back Developer 
+spring boot scheduler cron을 통한 DB 갱신 
+board page CRUD develop
+kakao token authorization & jwt token generate
 ## 백현우
 front Developer kakao map api and seoul sity data api 
 ## 전현철
