@@ -396,9 +396,9 @@ const initMap = () => {
       <div id="pagination"></div>
     </div>
   </div>
-  <div class="detailInfo" v-bind="itemV">
-    {{ itemV }}
-    <!-- <div>장소:{{ itemV.areaName }}</div>
+  <div class="detailInfo" v-bind="itemV" v-if="itemV != null">
+    <!-- {{ itemV }} -->
+    <div>장소:{{ itemV.areaName }}</div>
     <div>혼잡도:{{ itemV.areaCongestLevel }}</div>
     <div>상황:{{ itemV.areaCongestMessage }}</div>
     <div>혼잡인구 최솟값{{ itemV.areaLiveMin }}</div>
@@ -412,7 +412,7 @@ const initMap = () => {
     <div>40~49세 비율:{{ itemV.ageRate40 }}</div>
     <div>50~59세 비율:{{ itemV.ageRate50 }}</div>
     <div>60~69세 비율:{{ itemV.ageRate60 }}</div>
-    <div>70~79세 비율:{{ itemV.ageRate70 }}</div> -->
+    <div>70~79세 비율:{{ itemV.ageRate70 }}</div>
   </div>
 </template>
 
@@ -427,6 +427,7 @@ const initMap = () => {
   border-radius: 5px;
 }
 .infoImg {
+  border-radius: 50%;
   transform: scale();
   width: 200px;
   height: 250px;
@@ -434,11 +435,17 @@ const initMap = () => {
   pointer-events: none;
   -webkit-user-drag: none;
 }
+
 .infowin {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 10%;
   position: relative;
-  bottom: 210px;
-  width: 17vw;
-  height: 40vh;
+  bottom: 220px;
+  width: 200px;
+  height: 310px;
   background-color: #fff;
   z-index: 6;
 }

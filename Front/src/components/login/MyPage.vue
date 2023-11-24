@@ -36,7 +36,7 @@ const changeQues = () => {
     <div>이름:{{}}</div>
     <div>이메일:{{}}</div>
     <div>전화번호:{{}}</div>
-    <button v-on:click="changeQues">{{ ques }}</button>
+    <!-- <button v-on:click="changeQues">{{ ques }}</button> -->
     <input type="text" v-if="quesModal" class="modal" />
   </div>
   <!-- <Admin />

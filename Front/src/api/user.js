@@ -11,7 +11,7 @@ async function userConfirmKakao(code, success, fail) {
   console.log("code is:" + code + "/");
   // await local.post("/user/kakao/login", code).then(success).catch(fail);
   await axios
-    .post("http://localhost/user/kakao/login", new URLSearchParams({ code: code }))
+    .post("http://192.168.130.54/user/kakao/login", new URLSearchParams({ code: code }))
     .then(success)
     .catch(fail);
 }

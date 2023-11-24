@@ -41,16 +41,18 @@ socket.onmessage = function (e) {
   console.log(json);
 
   if (json.type === "ENTER") {
-    list = list += "<p class='enter'>" + json.message + "</p>";
-  } else if (json.sender === user) list = list += "<p class='my'>" + json.message + "</p>";
+    list = list += "<p style='text-align: center'>" + json.message + "</p>";
+  } else if (json.sender !== "kakao3170922753")
+    list = list += "<p style='text-align: right'>" + json.message + "</p>";
   else
     list = list +=
-      "<p class='other'> <strong>" + json.sender + " : </strong>" + json.message + "</p>";
+      "<p style='text-align: left'> <strong> admin : </strong>" + json.message + "</p>";
 
   document.getElementById("area").innerHTML = list;
 };
 
 function sendText() {
+  user = admin.value.id;
   var txt = document.getElementById("txt").value;
 
   var msg = {
@@ -78,10 +80,11 @@ const admin = ref({
       <input type="hidden" id="userName">
       <input type="hidden" id="roomId">
     </form> -->
+    <!-- <br />
+    <input type="text" id="UserId" @keyup.enter="change" /> -->
     <br />
-    <input type="text" id="UserId" @keyup.enter="change" />
-    <br />
-    <button @:click="connect()">생성</button> | <button @:click="change()">접속</button> |
+    <button @:click="connect()">문의하기</button>|
+    <!-- <button @:click="change()">접속</button> | -->
     <button @:click="disconnect()">종료</button>
     <br />
     <br />
@@ -114,15 +117,16 @@ setInterval(scrollToBottom, 50);
 }
 
 .enter {
-  text-align: center;
+  text-align: end;
 }
 
 .my {
-  text-align: right;
+  text-align: end;
+  background-color: red;
 }
 
 .other {
-  text-align: left;
+  text-align: end;
 }
 
 body {
