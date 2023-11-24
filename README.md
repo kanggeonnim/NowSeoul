@@ -52,13 +52,13 @@
 > - three를 이용하여 vue에 만들어진 3D모델링을 애니메이션화 가능하다.
 >
 ### 유스케이스 다이어그램
-![finalUsecase](https://github.com/kanggeonnim/NowSeoul/assets/104503792/5e9d0be0-6ec1-4770-aa3c-6d20c940e8c5)
+<img src="https://github.com/kanggeonnim/NowSeoul/assets/104503792/5e9d0be0-6ec1-4770-aa3c-6d20c940e8c5" width="80%" height="80%"/>
 
 ### ERD
-![ERD](https://github.com/kanggeonnim/NowSeoul/assets/104503792/f6c589d0-73f2-4291-89ae-672de96757df)
+<img src="https://github.com/kanggeonnim/NowSeoul/assets/104503792/f6c589d0-73f2-4291-89ae-672de96757df" width="80%" height="80%"/>
 
 ### 클래스 다이어그램
-![ClassDiagram](https://github.com/kanggeonnim/NowSeoul/assets/104503792/4a150c75-bae4-45f3-85f9-71cce0332ff7)
+<img src="https://github.com/kanggeonnim/NowSeoul/assets/104503792/4a150c75-bae4-45f3-85f9-71cce0332ff7" width="80%" height="80%"/>
 
 
 # NowSeoul
