@@ -51,6 +51,15 @@
 > - kakao map api에 있는 맵생성 마크 구현 커스텀 오버레이를 이용하여 화면 구성 전체적인 데이터는 axios를 이용하여 DB에있는 데이터를 가져오고 이미지 파일은 서울시 실시간 데이터 사이트에서 호출하여 가져온다 
 > 
 >
+### 유스케이스 다이어그램
+![finalUsecase](https://github.com/kanggeonnim/NowSeoul/assets/104503792/5e9d0be0-6ec1-4770-aa3c-6d20c940e8c5)
+
+### ERD
+![ERD](https://github.com/kanggeonnim/NowSeoul/assets/104503792/f6c589d0-73f2-4291-89ae-672de96757df)
+
+### 클래스 다이어그램
+![ClassDiagram](https://github.com/kanggeonnim/NowSeoul/assets/104503792/4a150c75-bae4-45f3-85f9-71cce0332ff7)
+
 
 # NowSeoul
 ## 강건
