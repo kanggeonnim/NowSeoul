@@ -65,15 +65,17 @@
 
 # NowSeoul
 ## 강건
-Back Developer 
-spring boot scheduler cron을 통한 DB 갱신 
-board page CRUD develop
-kakao token authorization & jwt token generate
+> - Back Developer 
+> - spring boot scheduler cron을 통한 DB 갱신 
+> - board page CRUD develop
+> - kakao token authorization & jwt token generate
 ## 백현우
-front Developer kakao map api and seoul sity data api 
+> - Front Developer
+> - kakao map api를 통한 마커 생성 및 실시간 정보 표시
+> - seoul sity data api를 통한 data 갱신
 ## 전현철
-Full stack Developer
-gooogle and naver login develop 
-and web socket using chatting funcion develop
-three funtion using 3d modeling develop
+> - Full stack Developer
+> - gooogle and naver login develop 
+> - web socket using chatting funcion develop (admin, client)
+> - three funtion using 3d modeling develop
 
