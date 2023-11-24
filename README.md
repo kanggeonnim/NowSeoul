@@ -7,130 +7,57 @@
 > [![Video Label](http://img.youtube.com/vi/vvC-j8gSpkA/0.jpg)](https://youtu.be/vvC-j8gSpkA)
 >
 ### WatchDemo and Follow
->
-> First, just say "Hi"
-> Then the chatbot will greet you
->
-> Second, say "학사 일정" and Ask questions about the date. ex) 9/1
-> Then the chatbot will tell you the schedule for the day.
->
-> Third, say "학과 안내" and enter the department you are interested in.
-> Then the chatbot will give you the department information.
->
-> If you are hungry, say "오늘 밥 뭐야"
-> Then the chatbot will tell you the menu for the day.
->
-> If your happiness is to eat, so if you want to know the food of the week, say "이번주 뭐나와"
-> Then the chatbot will tell you the menu for the week.
->
+> 지도의 마커 클릭시 해당 지역의 실시간 정보 제공
+> 게시판을 통한 글 작성, 수정, 삭제
+> 카카오 로그인
+> 일부 클릭시 3d 모델링을 통한 T1 League of legend world chapionship 우승 축하
+> 마이페이지에 있는 문의하기를 통한 관리자와 채팅 
 >
 ## 🛠 Development Environment
 > - OS: Windows 10 (or MacOS)
-> - JavaScript-Runtime: Node.js (ver. 18.12.0)
-> - Code Editor: Visual Studio Code
-> - Code Convention: ESLint(Airbnb-base), Prettier
-> - Git Hook: Use Husky (pre-commit, commit-msg)
-> - Comments: Doxygen
->
-## ⚙ Test & Production Environment
-> - Cloud Server: Ubuntu 22.04 LTS
-> - JavaScript-Runtime: Node.js (ver. 18.12.0)
+> - JavaScript-Runtime: Chrome (ver. 119.0.6045.160)
+> - Code Editor: Visual Studio Code, STS (ver. 3.9.14) 
+> - Code Convention: ESLint, Prettier,Pinia,Axios
+> - Framework: vue.js (ver. 3.3.4), spring boot (ver. 2.7.17)
+> - Kakao Login API
+> - Kakao Map API
+> - SeoulSity data
+> - Web Socket
+## ⚙ Production Environment
+> - Vite: ver. 4.4.11
+> - JavaScript-Runtime: Chrome (ver. 119.0.6045.160)
 > - Git: ver. 2.34.1
 >
 ## 📕 Guide Line
 > - ### FOR USERS
-> #### 1. Install Node.js(ver. 18) and Visual Studio Code.
-> #### 2. Clone our repository or Unzip the **LBDRWT-main.zip**.
-> #### 3. Open the (**LBDRWT-main** or clone) directory in Visual Studio Code.
-> #### 4. Open a terminal window in vscode and type the following:
-> ```
-> npm install
-> ```
-> #### 5. Create a new directory named **'data'**, and create **token.js** in the 'data directory'.
-> ```
-> const data = 'Enter your token';
+> - 1. WebPage site connect
+> - 2. login and memberjoin
+> - 3. main page map 
+> - 4. board page
+> - 5. mypage admin question
+
+> ### 전체기능
+> > ### Back에서 서울시 실시간 공공 데이터를 가져온다.
+> - back에서 spring boot mvc 패턴을 이용하여 서울시 공공 데이터 api를 5분 마다 호출하여 DB에 저장한다.
+> > ### 로그인시 카카오 로그인 API를 이용하여 로그인이 가능하다
+> - 
+> > ### 메인 페이지에 있는 맵을 이용하여 서울의 실시간 데이터를 얻을 수 있다
+> -
+> > ### 메인 페이지에 있는 맵을 이용하여 서울의 실시간 데이터를 얻을 수 있다
+> -
+> ### 메인 페이지에 있는 맵을 이용하여 서울의 실시간 데이터를 얻을 수 있다
+> - kakao map api에 있는 맵생성 마크 구현 커스텀 오버레이를 이용하여 화면 구성 전체적인 데이터는 axios를 이용하여 DB에있는 데이터를 가져오고 이미지 파일은 서울시 실시간 데이터 사이트에서 호출하여 가져온다 
 > 
-> function getToken() {
->   return data;
-> }
-> 
-> module.exports.getToken = getToken;
-> 
-> ```
-> #### 6. Type the following:
-> ```
-> node index.js
-> ```
-> #### 7. When it runs normally, you can see the token printed out.
-> #
-> - ### FOR NEW COLLABORATORS
-> #### 1. Complete all of the above guides.(For git clone, use github desktop or git bash.)
-> #### 2. Install the following from VSCode's extensions:
-> ![image](https://user-images.githubusercontent.com/61104736/206609028-55d060e1-ce5f-4c2a-ab4e-65753538cf2e.png)
-> #### 3. Open a terminal window in vscode and type the following:
-> ```
-> npm install -g eslint eslint-config-airbnb-base eslint-plugin-import
-> eslint --init
-> ```
-> ![image](https://user-images.githubusercontent.com/61104736/206612844-dc05321e-d241-4171-b52c-8c313906cc52.png)
-> ```
-> npx install-peerdeps --dev eslint-config-airbnb
-> ```
-> #### 4. Edit .eslintrc.js
-> ```
-> module.exports = {
->  root: true,
->  env: {
->    browser: true,
->    es2021: true,
->  },
->  extends: ['airbnb-base'],
->  overrides: [
->  ],
->  parserOptions: {
->    ecmaVersion: 'latest',
->    sourceType: 'module',
->  },
->  rules: {
->    'linebreak-style': 0,
->  },
->};
-> ```
-> #### 5. Install husky for git hook
-> ```
-> npx husky-init
-> npm install
-> npx husky add .husky/pre-commit 'eslint . --ext .js'
-> ```
-> Delete 'npm test' in pre-commit file.
 >
-> #### 6. Install commit lint
-> ```
-> npm install --dev @commitlint/config-conventional @commitlint/cli
-> ``` 
-> #### 7. Now you are ready to work together.
->
-## 🌈 All Versions
-> ### - 1.2.0 (Latest)
-> - Add feature for menu evaluation and guidance
-> - Improve feature for department office information
-> - Change the default notification message 
-> ### - 1.1.0
-> - Improve feature for random greeting
-> - Add feature for academic calendar guide
-> - Add feature for department office information
-> ### - 1.0.0
-> - Add feature for greeting
-> - Output 'I'm alive' for other inputs
->
-#
 
 # NowSeoul
 ## 강건
+Back Developer and board page develop and kakao login develpo 
 ## 백현우
+front Developer kakao map api and seoul sity data api 
 ## 전현철
-로그인(api에 요청 전송 후 토큰 및 정보 요청)
+Full stack Developer
+gooogle and naver login develop 
+and web socket using chatting funcion develop
+three funtion using 3d modeling develop
 
-채팅
-
-3D 모델
