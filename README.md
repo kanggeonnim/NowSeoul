@@ -40,7 +40,8 @@
 > > ### Back에서 서울시 실시간 공공 데이터를 가져온다.
 > - back에서 spring boot mvc 패턴을 이용하여 서울시 공공 데이터 api를 5분 마다 호출하여 DB에 저장한다.
 > > ### 로그인시 카카오 로그인 API를 이용하여 로그인이 가능하다
->![image](https://github.com/kanggeonnim/NowSeoul/assets/104503792/a7869942-cf80-4c8f-8d87-dd328aae3729)
+> <img src="https://github.com/kanggeonnim/NowSeoul/assets/104503792/a7869942-cf80-4c8f-8d87-dd328aae3729" width="50%" height="50%"/>
+
 > - 카카오를 통해 OAuth 2.0 인증을 사용하여 사용자 로그인을 관리한다.
 > > ### 게시판을 통한 유저간의 소통 활성화가 가능하다.
 > - CURD를 활용한 게시판의 기본기능을 제공한다.
